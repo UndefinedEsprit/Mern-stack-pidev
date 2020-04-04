@@ -1,0 +1,21 @@
+/*************************************
+************ Global CSS *************
+**************************************/
+
+
+/****** formThirdStep************/
+.carousel-indicators li{
+  background-color: blue!important;
+}
+.question-preview{
+  position: absolute;
+  top: 20%;
+  right: 20%;
+}
+#questionType-buttonGroup{
+  width: 50%;
+  text-align: center;
+}
+.questions-table,.responses-table, .questions-table button, .responses-table button{
+  font-size: 13px;
+}
