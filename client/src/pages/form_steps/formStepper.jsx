@@ -6,13 +6,14 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
-
+import { useLocation, Link } from 'react-router-dom'
 import axios from "axios";
-import { CreateFormContext as Context } from "../../contexts/createFormContext";
+import { FormContext as Context } from "../../contexts/formContext";
 
 import FormFirstStep from "./formFirstStep";
 import FormSecondStep from "./formSecondStep";
 import FormThirdStep from "./formThirdStep";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +59,27 @@ export default function HorizontalLinearStepper() {
   const steps = getSteps();
   const [progressForm, setProgressForm] = React.useState(0);
   const [progressFiles, setProgressFiles] = React.useState(0);
+  let location = useLocation();
+  const ServerURL = process.env.REACT_APP_SERVER_URL ;
+  const params = new URLSearchParams(location.search);
+
+
+
+  useEffect(()=>{
+    
+    let formId = params.get('form')
+    if(formId !==undefined && formId !==null ){
+      axios.get(ServerURL+'/form/'+formId)
+      .then(({data})=>{
+        setForm({
+          ...form,
+          formTitle: data.title,
+          formDescription: data.description,
+          formQuestions: data.questions,
+        })
+      })
+    }
+  },[])
 
   const isStepOptional = (step) => {
     /**
@@ -127,21 +149,25 @@ export default function HorizontalLinearStepper() {
   /**
    * this function makes an api call to the server to add a new form
    */
-  const addNewForm = () => {
+  const addNewForm = () => {    
+    //this gets the study id from the query param
+    const params = new URLSearchParams(location.search);
     let newForm = {
+      _id : params.get('form'),
       title: form.formTitle,
+      study : {_id : params.get('id')},
       description: form.formDescription,
       questions: form.formQuestions,
     };
-
     let formData = new FormData();
     form.files.map((file) => {
       formData.append("file", file);
     });
 
+    let requestUrl = (params.get('form') === undefined || params.get('form') === null) ? '/form/new' : '/form/edit'
     //this will send the form
     axios
-      .post("http://localhost:5000/api/form", newForm, {
+      .post(ServerURL+requestUrl, newForm, {
         onUploadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable
             ? progressEvent.total
@@ -161,7 +187,7 @@ export default function HorizontalLinearStepper() {
 
     //this will send the files
     axios
-      .post("http://localhost:5000/api/form/upload", formData, {
+      .post(ServerURL+"/form/upload", formData, {
         onUploadProgress: (progressEvent) => {
           const totalLength = progressEvent.lengthComputable
             ? progressEvent.total
@@ -178,6 +204,7 @@ export default function HorizontalLinearStepper() {
         },
       })
       .catch((err) => console.log(err));
+      
   };
 
   /**
@@ -251,7 +278,8 @@ export default function HorizontalLinearStepper() {
                 ) : (
                   <h1 style={{ marginBottom: "50px" }}>Please wait...</h1>
                 )}
-                <button
+                <Link
+                  to="/management/studies"
                   className="btn btn-primary"
                   style={{
                     textTransform: "none",
@@ -261,21 +289,8 @@ export default function HorizontalLinearStepper() {
                   disabled={!(progressForm === 100 && progressForm === 100)}
                 >
                   <i className="fas fa-folder-open" style={{ margin: 5 }}></i>
-                  Manage existing forms
-                </button>
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={handleReset}
-                  style={{
-                    textTransform: "none",
-                    backgroundColor: "none",
-                    margin: " 0px 5px 15px 5px",
-                  }}
-                  disabled={!(progressForm === 100 && progressForm === 100)}
-                >
-                  <i className="fas fa-folder-plus" style={{ margin: 5 }}></i>
-                  Create new Form
-                </button>
+                  Management
+                </Link>
               </div>
             </div>
           </>

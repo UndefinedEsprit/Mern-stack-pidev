@@ -28,7 +28,6 @@ StudyService.prototype.getById = (req,res) => {
 
 StudyService.prototype.add = (req,res) => {
     let obj = req.body;
-    console.log(obj);
     let model = new Study(obj);
     model._id=mongoose.Types.ObjectId();
     model.save((err,result)=>{
@@ -42,7 +41,10 @@ StudyService.prototype.add = (req,res) => {
 
 StudyService.prototype.update = (req,res) => {
     let id = req.body._id;
-    Study.findOneAndUpdate(id,req.body,(err,result) => {
+    let study = {
+        name : req.body.name
+    }
+    Study.findOneAndUpdate({ _id : id},study,{new :true},(err,result) => {
         if(err){
             res.send(err);
         }else{
@@ -52,8 +54,8 @@ StudyService.prototype.update = (req,res) => {
 }
 
 StudyService.prototype.delete = (req,res) => {
-    let id = req.body._id;
-    Study.findOneAndDelete(id,(err,result) => {
+    let id = req.query.id;
+    Study.findOneAndDelete({ _id : id},(err,result) => {
         if(err){
             res.send(err);
         }else{

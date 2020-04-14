@@ -1,13 +1,10 @@
 import React, { useContext } from "react";
-import { CreateFormContext as Context } from "../../contexts/createFormContext";
-
+import { FormContext as Context } from "../../contexts/formContext";
 import QuestionForm from "./questionForm";
 import QuestionAddedTable from "./questionAddedTable";
 
 const FormSecondStep = () => {
-  /**
-   * this gets the context from creatFormContext so we can use and edit the state
-   */
+  
   const [form, setForm] = useContext(Context);
 
   /**
@@ -15,27 +12,36 @@ const FormSecondStep = () => {
    * form object later
    */
   const addQuestion = e => {
-    let questions = form.formQuestions;
-    let files = form.files;
-    let file =form.questionFile;
+
+    let questions = form.formQuestions;//questions already added
+    let files = form.files;//files already added
+    let file =form.questionFile;//file to be added
+
+    //if file is empty dont add to the list of files
     if  (file !== undefined && file !== null) files.push(file);
+
     let question = {
       text: form.questionText,
-      file: (file ===undefined || file === null) ? '' : file.name,
+      file: form.questionFileName,
       type: form.questionType,
       responses: form.questionType === "multiple" ? form.questionResponses : []
     };
+
     questions.push(question);
+
     setForm({
       ...form,
       formQuestions: questions,
       questionText: "",
+      questionFileName : '',
       questionFile: null,
       questionType: "yes/no",
       questionResponses: [],
+      responseText: "",
+      responseFileName: "",
+      responseFile: null,
       files : files
     });
-    console.log(form);
     e.preventDefault();
   };
 
@@ -82,26 +88,29 @@ const FormSecondStep = () => {
    * this function edit the selected question in the form questions list
    */
   const editQuestion = () => {
-    let questions = form.formQuestions;
-    questions.forEach((element, index) => {
-      if (index === form.questionIndex) {
-        element.text = form.questionText;
-        element.file = form.questionFile;
-        element.type = form.questionType;
-        element.responses =
-          form.questionType === "multiple" ? form.questionResponses : [];
-      }
-    });
+
+    let questions = form.formQuestions;//get questions already added
+    let files =form.files//get files already added
+
+    questions[form.questionIndex] = {
+      text : form.questionText,
+      file : form.questionFileName,
+      type : form.questionType,
+      responses : (form.questionType === "multiple") ? form.questionResponses : []
+    }
+
+    if(form.questionFile !== undefined && form.questionFile !== null) files.push(form.questionFile);
+
     setForm({
       ...form,
       formQuestions: questions,
       questionText: "",
-      questionFile: "",
+      questionFileName: "",
+      questionFile : null,
       questionType: "yes/no",
       questionResponses: [],
-      questionIndex: -1
+      questionIndex: -1,
     });
-    console.log(questions);
     console.log(form);
   };
 
@@ -113,7 +122,8 @@ const FormSecondStep = () => {
     setForm({
       ...form,
       questionText: "",
-      questionFile: "",
+      questionFileName: "",
+      questionFile : null,
       questionType: "yes/no",
       questionResponses: [],
       questionIndex: -1

@@ -10,7 +10,8 @@
 .question-preview{
   position: absolute;
   top: 20%;
-  right: 20%;
+  left: 50%;
+  transform: 'translate(-50%,-0%)';
 }
 #questionType-buttonGroup{
   width: 50%;
@@ -18,4 +19,19 @@
 }
 .questions-table,.responses-table, .questions-table button, .responses-table button{
   font-size: 13px;
+}
+button:disabled{
+  cursor: not-allowed!important;
+}
+/****main.jsx****/
+.topbar,.page-wrapper{
+  background-color: white;
+}
+.logo-min {
+  max-width: 40px!important;
+}
+@media(min-width : 1168px ){
+  .logo-min{
+    display: none!important;
+  }
 }

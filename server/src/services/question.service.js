@@ -3,6 +3,20 @@ const Form = require('../models/form');
 const mongoose = require('mongoose');
 
 class QuestionService {
+
+    add = async (data) => {
+        let model = new Question(data);
+        model._id=mongoose.Types.ObjectId();
+        return await model.save();
+    }
+
+    getByForm = async (id) => {
+        return await  Question.find({"form" : { "_id" : id}})
+    }
+    
+    deleteByForm = async (id)=>{
+        return await Question.deleteMany({ form: { _id: id } });
+    }
 }
  
 
@@ -38,6 +52,7 @@ QuestionService.prototype.getByForm = (req,res) => {
     })
 }
 
+/*
 QuestionService.prototype.add = (req,res) => {
     let model = new Question(req.body);
     model._id=mongoose.Types.ObjectId();
@@ -49,6 +64,7 @@ QuestionService.prototype.add = (req,res) => {
         }
     })
 }
+*/
 
 QuestionService.prototype.update = (req,res) => {
     let id = req.body._id;

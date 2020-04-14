@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const studySchema = new Schema(
   {
     _id: Schema.Types.ObjectId,
-    name: String,
+    name: String
   },
   {
     timestamps: true,
