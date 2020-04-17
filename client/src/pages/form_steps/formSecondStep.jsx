@@ -4,27 +4,25 @@ import QuestionForm from "./questionForm";
 import QuestionAddedTable from "./questionAddedTable";
 
 const FormSecondStep = () => {
-  
   const [form, setForm] = useContext(Context);
 
   /**
    * this function joins the new added question to the question buffer to be added to the
    * form object later
    */
-  const addQuestion = e => {
-
-    let questions = form.formQuestions;//questions already added
-    let files = form.files;//files already added
-    let file =form.questionFile;//file to be added
+  const addQuestion = (e) => {
+    let questions = form.formQuestions; //questions already added
+    let files = form.files; //files already added
+    let file = form.questionFile; //file to be added
 
     //if file is empty dont add to the list of files
-    if  (file !== undefined && file !== null) files.push(file);
+    if (file !== undefined && file !== null) files.push(file);
 
     let question = {
       text: form.questionText,
       file: form.questionFileName,
       type: form.questionType,
-      responses: form.questionType === "multiple" ? form.questionResponses : []
+      responses: form.questionType === "multiple" ? form.questionResponses : [],
     };
 
     questions.push(question);
@@ -33,14 +31,14 @@ const FormSecondStep = () => {
       ...form,
       formQuestions: questions,
       questionText: "",
-      questionFileName : '',
+      questionFileName: "",
       questionFile: null,
       questionType: "yes/no",
       questionResponses: [],
       responseText: "",
       responseFileName: "",
       responseFile: null,
-      files : files
+      files: files,
     });
     e.preventDefault();
   };
@@ -55,7 +53,7 @@ const FormSecondStep = () => {
     if (form.questionIndex === -1)
       return (
         <button
-          className="btn btn-outline-primary"
+          className="btn btn-primary"
           onClick={addQuestion}
           disabled={
             form.questionText.length === 0 ||
@@ -70,15 +68,13 @@ const FormSecondStep = () => {
     else
       return (
         <>
-          <button className="btn btn-outline-success" onClick={editQuestion}>
+          <button
+            className="btn btn-warning"
+            style={{ color: "white" }}
+            onClick={editQuestion}
+          >
             <i className="fas fa-pen" style={{ margin: 5 }}></i>
             Edit this Question
-          </button>
-          <button
-            className="btn btn-outline-secondary"
-            onClick={cancelEditQuestion}
-          >
-            Cancel
           </button>
         </>
       );
@@ -88,25 +84,25 @@ const FormSecondStep = () => {
    * this function edit the selected question in the form questions list
    */
   const editQuestion = () => {
-
-    let questions = form.formQuestions;//get questions already added
-    let files =form.files//get files already added
+    let questions = form.formQuestions; //get questions already added
+    let files = form.files; //get files already added
 
     questions[form.questionIndex] = {
-      text : form.questionText,
-      file : form.questionFileName,
-      type : form.questionType,
-      responses : (form.questionType === "multiple") ? form.questionResponses : []
-    }
+      text: form.questionText,
+      file: form.questionFileName,
+      type: form.questionType,
+      responses: form.questionType === "multiple" ? form.questionResponses : [],
+    };
 
-    if(form.questionFile !== undefined && form.questionFile !== null) files.push(form.questionFile);
+    if (form.questionFile !== undefined && form.questionFile !== null)
+      files.push(form.questionFile);
 
     setForm({
       ...form,
       formQuestions: questions,
       questionText: "",
       questionFileName: "",
-      questionFile : null,
+      questionFile: null,
       questionType: "yes/no",
       questionResponses: [],
       questionIndex: -1,
@@ -123,10 +119,10 @@ const FormSecondStep = () => {
       ...form,
       questionText: "",
       questionFileName: "",
-      questionFile : null,
+      questionFile: null,
       questionType: "yes/no",
       questionResponses: [],
-      questionIndex: -1
+      questionIndex: -1,
     });
   };
 
