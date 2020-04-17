@@ -58,41 +58,25 @@ FormService.prototype.getAll = (req, res) => {
   });
 };
 
-FormService.prototype.add = (req, res) => {
-  console.log("im in add");
-  let newForm = new Form({
+FormService.prototype.add = async (req, res) => {
+  //get the form object from req
+  let form = new Form({
     title: req.body.title,
     description: req.body.description,
     study: req.body.study,
     _id: mongoose.Types.ObjectId(),
   });
-  let questions = req.body.questions;
-  newForm.save((err, result) => {
-    if (err) {
-      res.send(err);
-    } else {
-      if (questions !== undefined && questions.length !== 0)
-        questions.map((question) => {
-          let newQuestion = new Question({
-            _id: mongoose.Types.ObjectId(),
-            text: question.text,
-            type: question.type,
-            file: question.file,
-            responses: question.responses,
-            form: { _id: result._id },
-          });
-          newQuestion.save((err, result) => {
-            if (err) {
-              res.send(err);
-            }
-          });
-        });
-      res.send(result);
-    }
-  });
+  try {
+    form = await form.save();
+    await questionService.addAll(req.body.questions, form._id);
+    res.status("200").send();
+  } catch (error) {
+    console.log(error);
+    res.status("500").send(error);
+  }
 };
 
-FormService.prototype.edit = (req, res) => {
+FormService.prototype.edit = async (req, res) => {
   //get form id
   let formId = req.body._id;
   //check again if form id is not null
@@ -103,40 +87,15 @@ FormService.prototype.edit = (req, res) => {
       description: req.body.description,
       study: req.body.study,
     });
-    //get the form questions seperatly 
-    let questions = req.body.questions;
-    //update the existing form
-    Form.findOneAndUpdate({ _id: formId }, form, { new: true }, (err, result) => {
-      if (err) {
-        res.send(err);
-      } else {
-        //delete all the questions belonging to that form
-        Question.deleteMany({ form: { _id: formId } }, (err, result) => {
-          if (err) res.send(err);
-          else {
-            //check if form questions list is not empty
-            if (questions !== undefined && questions.length !== 0)
-              //map the questions and save every question
-              questions.map((question) => {
-                let newQuestion = new Question({
-                  _id: mongoose.Types.ObjectId(),
-                  text: question.text,
-                  type: question.type,
-                  file: question.file,
-                  responses: question.responses,
-                  form: { _id: formId },
-                });
-                newQuestion.save((err, result) => {
-                  if (err) {
-                    res.send(err);
-                  }
-                });
-              });
-            else res.send(result);
-          }
-        });
-      }
-    });
+    try {
+      await Form.findOneAndUpdate({ _id: formId }, form, { new: true });
+      await Question.deleteMany({ form: { _id: formId } });
+      await questionService.addAll(req.body.questions, formId);
+      res.status("200").send();
+    } catch (error) {
+      console.log(error);
+      res.status("500").send();
+    }
   } else res.status("500").send();
 };
 

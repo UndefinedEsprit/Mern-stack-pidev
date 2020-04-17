@@ -134,9 +134,10 @@ const FormThirStep = () => {
         });
     }
   };
+
   return (
     <div className="row">
-      <div className="offset-md-2 col-md-8 offset-md-2" style={{height : 400}}> 
+      <div className="offset-md-2 col-md-8 offset-md-2" style={{height : 500}}> 
         <div style={loaderWrapper}>
         <div class="spinner-border text-primary" style={loader}>
           <span class="sr-only">Loading...</span>
