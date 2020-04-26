@@ -112,7 +112,7 @@ const StudiesMngmt = () => {
               icon: "assessment",
               tooltip: "Statistics",
               onClick: (event, rowData) =>
-                history.push("/studiespage/" + rowData._id),
+                history.push("/formspage/" + rowData._id),
             },
           ]}
           editable={{

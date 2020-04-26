@@ -50,42 +50,55 @@ function FormsPage(props) {
           <Loading />
         </div>
       ) : (
-        <div>
-          {props.forms && props.countQuestions && props.formsStatus && (
-            <div>
-                                 {" "}
-              {props.forms.map((form) => (
-                <div>
-                  {props.countQuestions.map((element) => {
-                    if (element.formId == form._id)
-                      return (
-                        <div>
-                          <p>{form.title} </p>
-                          <p>{form.description} </p>
-                          <p>{element.questionsNumber} </p>
-                          <Link
-                            key={form._id}
-                            to={{ pathname: "/questionspage/" + form._id }}
-                          >
-                            {" "}
-                            check{" "}
-                          </Link>
-                        </div>
-                      );
-                  })}
+        <div className="">
+          <div className="row">
+            {props.forms && props.countQuestions && props.formsStatus && (
+              <>
+                <div className="col-md-4">
+                  <nav className="navbar">
+                    <ul class="navbar-nav mr-auto">
+                      {props.forms.map((form) => (
+                        <>
+                          {props.countQuestions.map((element) => {
+                            if (element.formId == form._id)
+                              return (
+                                <li class="nav-item">
+                                  <Link
+                                    class="nav-link "
+                                    key={form._id}
+                                    to={{
+                                      pathname: "/questionspage/" + form._id,
+                                    }}
+                                  >
+                                    {form.title}
+                                  </Link>
+                                </li>
+                              );
+                          })}
+                        </>
+                      ))}
+                    </ul>
+                  </nav>
+                                     
                 </div>
-              ))}
-              <div>
-                <AllFormsQuestionsNumbersStat
-                  forms={props.forms}
-                  countQuestions={props.countQuestions}
-                />
-              </div>
-              <div>
-                <FormsStatusStat formsStatus={props.formsStatus} />
-              </div>
-            </div>
-          )}
+                <div className="col-md-8">
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <AllFormsQuestionsNumbersStat
+                        forms={props.forms}
+                        countQuestions={props.countQuestions}
+                      />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <FormsStatusStat formsStatus={props.formsStatus} />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
     </div>

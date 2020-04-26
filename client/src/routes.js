@@ -15,9 +15,9 @@ const Routes = () => {
       <DefaultRoute path="/form/new" component={FormSteps} />
       <DefaultRoute path="/form/edit" component={FormSteps} />
       <DefaultRoute path="/management" component={Management} />
-      <Route path="/studiespage" component={StudiesPage} />
+      <DefaultRoute path="/studiespage" component={StudiesPage} />
       <Route path="/questionspage/:id" component={QuestionsPage} />
-      <Route path="/formspage/:id" component={FormsPage} />
+      <DefaultRoute path="/formspage/:id" component={FormsPage} />
       <Route path="/responsespage/:id" component={ResponsesPage} />
       <Redirect to="/management/studies" />
     </Switch>
