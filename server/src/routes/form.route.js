@@ -74,4 +74,7 @@ router.post("/upload", upload.array("file"), (req, res, next) => {
   res.status(200).json({ message: "images successfully saved" });
 });
 
+router.get("/getStatusByStudy/:id", formService.getStatusByStudy);
+router.get("/getCountQuestions/:id", formService.CountQuestions);
+
 module.exports = router;

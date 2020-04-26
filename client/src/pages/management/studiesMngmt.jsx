@@ -1,20 +1,19 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import MaterialTable from "material-table";
 import axios from "axios";
 import { ManagementContext as Context } from "../../contexts/managementContext";
 import { useHistory } from "react-router-dom";
 
 const StudiesMngmt = () => {
-
   const [management, setManagement] = React.useContext(Context);
-  const [loading,setLoading]=React.useState(false);
-  const ServerURL = process.env.REACT_APP_SERVER_URL ;
+  const [loading, setLoading] = React.useState(false);
+  const ServerURL = process.env.REACT_APP_SERVER_URL;
   const history = useHistory();
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get(ServerURL+"/study")
+      .get(ServerURL + "/study")
       .then(({ data }) => {
         setManagement({
           studies: data,
@@ -42,7 +41,7 @@ const StudiesMngmt = () => {
    */
   const addNewStudy = async (study) => {
     return await axios
-      .post(ServerURL+"/study", study)
+      .post(ServerURL + "/study", study)
       .then(({ data }) => {
         let prevStudies = management.studies;
         prevStudies.push(data);
@@ -59,9 +58,9 @@ const StudiesMngmt = () => {
    * to update in database and updates it in the table displayed
    */
   const updateStudy = async (newStudy, oldStudy) => {
-    console.log(newStudy._id)
+    console.log(newStudy._id);
     return await axios
-      .put(ServerURL+"/study", newStudy)
+      .put(ServerURL + "/study", newStudy)
       .then(({ data }) => {
         setManagement((prevManagement) => {
           const studies = [...prevManagement.studies];
@@ -77,9 +76,9 @@ const StudiesMngmt = () => {
    * study from database and filters it from the table displayed
    */
   const deleteStudy = async (study) => {
-    console.log(study)
+    console.log(study);
     return await axios
-      .delete(ServerURL+"/study", {params: { id: study._id }})
+      .delete(ServerURL + "/study", { params: { id: study._id } })
       .then(({ data }) => {
         let prevStudies = management.studies;
         prevStudies = prevStudies.filter((element) => element._id !== data._id);
@@ -91,9 +90,9 @@ const StudiesMngmt = () => {
       .catch((err) => console.log(err));
   };
 
-  const fetchForms =(studyId) =>{         
-    history.push("/management/forms?id="+studyId);
-  }
+  const fetchForms = (studyId) => {
+    history.push("/management/forms?id=" + studyId);
+  };
 
   return (
     <div className="row">
@@ -107,23 +106,24 @@ const StudiesMngmt = () => {
             {
               icon: "folderOpenOutlined",
               tooltip: "Browse forms",
-              onClick: (event, rowData) => fetchForms(rowData._id)
+              onClick: (event, rowData) => fetchForms(rowData._id),
             },
             {
               icon: "assessment",
               tooltip: "Statistics",
-              onClick: (event, rowData) => history.push('/statistics?id='+rowData._id)
+              onClick: (event, rowData) =>
+                history.push("/studiespage/" + rowData._id),
             },
           ]}
           editable={{
             onRowAdd: (newData) => addNewStudy(newData),
             onRowUpdate: (newData, oldData) => updateStudy(newData, oldData),
             onRowDelete: (oldData) => deleteStudy(oldData),
-          }}  
+          }}
           options={{
             pageSize: 10,
-            actionsColumnIndex: -1
-          }}        
+            actionsColumnIndex: -1,
+          }}
         />
       </div>
     </div>

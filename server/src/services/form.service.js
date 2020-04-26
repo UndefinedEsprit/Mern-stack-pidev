@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const MailService = require("./mail.service");
 const GroupService = require("./group.service");
 const QuestionService = require("./question.service");
+const CountQuestions = require("../models/countQuestions");
+const FormsStatus = require("../models/formsStatus");
 
 const mailService = new MailService();
 const groupService = new GroupService();
@@ -99,4 +101,51 @@ FormService.prototype.edit = async (req, res) => {
   } else res.status("500").send();
 };
 
+FormService.prototype.getCountByStudy = async (id, res) => {
+  const forms = await Form.find({ study: { _id: id } });
+  res = forms.length;
+  return res;
+};
+
+FormService.prototype.CountQuestions = async (req, res) => {
+  const forms = await Form.find({ study: { _id: req.params.id } });
+  let countMap = [];
+  for (const form of forms) {
+    let questionsNumber = await QuestionService.prototype.getCountByForm(
+      form._id
+    );
+    let countQuestions = new CountQuestions();
+    countQuestions.setFormId(form._id);
+    countQuestions.setQuestionsNumber(questionsNumber);
+    countMap.push(countQuestions);
+  }
+
+  res.json(countMap);
+};
+
+FormService.prototype.getStatusById = async (id) => {
+  const form = await Form.findById(id);
+  if (form.expiresAt) {
+    return "expired";
+  } else {
+    if (form.publishedAt) {
+      return "published";
+    } else {
+      return "unpublished";
+    }
+  }
+};
+
+FormService.prototype.getStatusByStudy = async (req, res) => {
+  const forms = await Form.find({ study: { _id: req.params.id } });
+  let statusMap = [];
+  for (const form of forms) {
+    let status = await FormService.prototype.getStatusById(form._id);
+    let formsStatus = new FormsStatus();
+    formsStatus.setFormId(form._id);
+    formsStatus.setStatus(status);
+    statusMap.push(formsStatus);
+  }
+  res.json(statusMap);
+};
 module.exports = FormService;

@@ -64,4 +64,10 @@ QuestionService.prototype.getByForm = (req, res) => {
   });
 };
 
+QuestionService.prototype.getCountByForm = async (id, res) => {
+  const questions = await Question.find({ form: { _id: id } });
+  res = questions.length;
+  return res;
+};
+
 module.exports = QuestionService;
