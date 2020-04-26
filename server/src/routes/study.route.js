@@ -6,10 +6,9 @@ const service = new StudyService();
 
 router.post("/", service.add);
 router.get("/", service.getAll);
+router.get("/getCountForms", service.CountForms);
 router.get("/:id", service.getById);
 router.put("/", service.update);
 router.delete("/", service.delete);
-
-router.get("/getCountForms", service.CountForms);
 
 module.exports = router;

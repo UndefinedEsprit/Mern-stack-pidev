@@ -70,4 +70,9 @@ QuestionService.prototype.getCountByForm = async (id, res) => {
   return res;
 };
 
+QuestionService.prototype.getAllByForm = async (req, res) => {
+  const questions = await Question.find({ form: { _id: req.params.id } });
+  res.json(questions);
+};
+
 module.exports = QuestionService;

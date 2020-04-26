@@ -38,10 +38,7 @@ export class StudiesPage extends Component {
                 {this.props.studies.map((study) => (
                   <div>
                     {this.props.countForms.map((element) => {
-                      if (
-                        element !== undefined &&
-                        element.studyName == study.name
-                      )
+                      if (element.studyName == study.name)
                         return (
                           <div class="row">
                             <div>

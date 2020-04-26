@@ -66,7 +66,9 @@ StudyService.prototype.delete = (req, res) => {
 };
 
 StudyService.prototype.CountForms = async (req, res) => {
+  console.log("im here");
   const studies = await Study.find();
+
   let countMap = [];
   for (const study of studies) {
     let formsNumber = await FormService.prototype.getCountByStudy(study._id);

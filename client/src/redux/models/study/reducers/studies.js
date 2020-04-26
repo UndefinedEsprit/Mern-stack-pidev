@@ -40,12 +40,11 @@ export function countForms(state = initialState.countForms, action) {
     case types.studies.GETCOUNTFORMS: {
       const { countForms } = action;
       let nextState = Object.assign({}, state);
-      /*
       for (let StudyCountForms of countForms) {
         if (!nextState[StudyCountForms.studyId]) {
           nextState[StudyCountForms.studyId] = StudyCountForms;
         }
-      }*/
+      }
       return nextState;
     }
 
