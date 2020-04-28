@@ -4,8 +4,8 @@ import { GetQuestionsByForm} from '../../../api/http';
 
 
 export function getQuestionsForForm(formId){ 
-    let questions;
-    return async (dispatch) => {
+    let questions={};
+    return async (dispatch) => { 
     questions=  await GetQuestionsByForm(formId);
     dispatch (updateAvailableQuestions(questions)); 
     }  
@@ -16,4 +16,6 @@ export function updateAvailableQuestions(questions) {
         questions
     };
 }
+
+
 

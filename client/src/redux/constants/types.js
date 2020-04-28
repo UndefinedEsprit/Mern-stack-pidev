@@ -2,7 +2,8 @@
 export const app = { 
     ERROR: 'app/error',
     LOADED: 'app/loaded',
-    LOADING: 'app/loading'
+    LOADING: 'app/loading',
+    RESET: 'app/reset'
 }
 
 

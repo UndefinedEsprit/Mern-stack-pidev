@@ -21,7 +21,7 @@ export function updateCountQuestions( countQuestions) {
         };
 }
 export function getCountQuestions(studyId) {
-    let countQuestions;
+    let countQuestions={};
     return async (dispatch) => {
         countQuestions= await GetCountQuestions(studyId);
         dispatch(updateCountQuestions(countQuestions));
@@ -29,7 +29,7 @@ export function getCountQuestions(studyId) {
 }
 
 export function getFormsStatus(studyId) {
-    let formsStatus;
+    let formsStatus={};
     return async (dispatch) => {
     formsStatus= await GetFormsStatusByStudy(studyId);
     dispatch(updateFormsStatus(formsStatus));
@@ -44,7 +44,7 @@ export function updateFormsStatus( formsStatus) {
 }
 
 export function getFormsForStudy(studyId){ 
-    let forms;
+    let forms={};
     return async (dispatch) => {
     forms=  await GetFormsByStudy(studyId);
     dispatch (updateAvailableForms(forms)); 

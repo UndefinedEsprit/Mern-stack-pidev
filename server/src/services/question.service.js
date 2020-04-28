@@ -3,7 +3,8 @@ const Form = require("../models/form");
 const mongoose = require("mongoose");
 
 class QuestionService {
-  add = async (data, formId) => {
+}
+QuestionService.prototype.add = async (data, formId) => {
     let question = new Question({
       _id: mongoose.Types.ObjectId(),
       text: data.text,
@@ -15,7 +16,7 @@ class QuestionService {
     return await question.save();
   };
 
-  addAll = async (questions, formId) => {
+  QuestionService.prototype.addAll = async (questions, formId) => {
     if (questions !== undefined && questions.length !== 0) {
       for (let index in questions) {
         await this.add(questions[index], formId);
@@ -23,14 +24,13 @@ class QuestionService {
     }
   };
 
-  getByForm = async (id) => {
+  QuestionService.prototype.getByForm = async (id) => {
     return await Question.find({ form: { _id: id } });
   };
 
-  deleteByForm = async (id) => {
+  QuestionService.prototype.deleteByForm = async (id) => {
     return await Question.deleteMany({ form: { _id: id } });
   };
-}
 
 QuestionService.prototype.getAll = (req, res) => {
   Question.find({}, (err, result) => {

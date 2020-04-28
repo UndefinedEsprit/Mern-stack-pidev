@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux'; 
 import { error } from './error'; 
+import * as types from '../constants/types';
 import { loading } from './loading';
 import { studies, studyIds,countForms } from '../models/study/reducers/studies';
-//import { user } from './user';
 import { forms, formIds ,countQuestions,formsStatus} from '../models/form/reducers/forms'; 
 import { questions,questionIds} from '../models/question/reducers/questions'; 
+import initialReduxState from "../constants/initialState";
   
-   const rootReducer = combineReducers({
+   const appReducer = combineReducers({
     formIds, 
     forms,
     error,
@@ -19,5 +20,12 @@ import { questions,questionIds} from '../models/question/reducers/questions';
     questions,
     questionIds
 });
- 
+   const rootReducer = (state, action) => {
+    // when a reset is dispatched it will reset redux state
+    if (action.type == types.app.RESET) {
+      state = initialReduxState;
+    }
+  
+    return appReducer(state, action);
+  };
 export default rootReducer;

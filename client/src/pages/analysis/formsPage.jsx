@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import orderBy from "lodash/orderBy";
 import { createError } from "../../redux/actions/error";
+import {reset} from "../../redux/actions/reset";
 import {
   getFormsForStudy,
   getCountQuestions,
@@ -11,10 +12,6 @@ import {
 } from "../../redux/models/form/actions/forms";
 import AllFormsQuestionsNumbersStat from "./components/stats/allFormsQuestionsNumbersStat";
 import Loading from "./components/loading";
-import {
-  getStudies,
-  getCountForms,
-} from "../../redux/models/study/actions/studies";
 import FormsStatusStat from "./components/stats/formsStatusStat";
 import {
   BrowserRouter as Router,
@@ -31,9 +28,10 @@ function FormsPage(props) {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        await props.actions.getCountQuestions(id);
-        await props.actions.getFormsForStudy(id);
-        await props.actions.getFormsStatus(id);
+        await props.actions.reset();
+        await props.actions.getCountQuestions(id );
+        await props.actions.getFormsForStudy(id );
+        await props.actions.getFormsStatus(id );
         setIsLoading(false);
       } catch (e) {
         console.log(e);
@@ -109,10 +107,11 @@ FormsPage.propTypes = {
     getCountQuestions: PropTypes.func,
     getFormsForStudy: PropTypes.func,
     getFormsStatus: PropTypes.func,
+    reset: PropTypes.func,
   }),
 };
 export const mapStateToProps = (state) => {
-  //console.log(state);
+  console.log(state);
   const forms = orderBy(state.formIds.map((formId) => state.forms[formId]));
   const countQuestions = orderBy(
     state.formIds.map((formId) => state.countQuestions[formId])
@@ -128,13 +127,16 @@ export const mapDispatchToProps = (dispatch) => {
     actions: bindActionCreators(
       {
         createError,
-        getFormsStatus,
         getCountQuestions,
         getFormsForStudy,
+        getFormsStatus,
+        reset
       },
       dispatch
     ),
   };
 };
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormsPage);

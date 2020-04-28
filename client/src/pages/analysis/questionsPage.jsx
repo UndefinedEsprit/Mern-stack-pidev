@@ -6,6 +6,7 @@ import orderBy from 'lodash/orderBy';
 import { createError } from '../../redux/actions/error';
 import {getQuestionsForForm } from '../../redux/models/question/actions/questions';
 import QuestionsTypesStat from './components/stats/questionsTypesStat';
+import {reset} from "../../redux/actions/reset";
 import Loading from './components/loading'; 
 import {
     BrowserRouter as Router,
@@ -23,6 +24,7 @@ function QuestionsPage(props){
         const fetchData = async () => {
             try {
             setIsLoading(true);
+            await props.actions.reset();
             await props.actions.getQuestionsForForm(id);  
             setIsLoading(false);
             } catch(e) {
@@ -65,7 +67,8 @@ function QuestionsPage(props){
 }
 QuestionsPage.propTypes = {
     actions: PropTypes.shape({
-        getQuestionsForForm: PropTypes.func
+        getQuestionsForForm: PropTypes.func,
+        reset: PropTypes.func,
     })
 };
 export const mapStateToProps = state => {
@@ -78,6 +81,7 @@ export const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators({
             createError,
+            reset,
             getQuestionsForForm
             },
         dispatch

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import orderBy from 'lodash/orderBy';
 import { createError } from '../../redux/actions/error';
 import {getQuestionsForForm } from '../../redux/models/question/actions/questions';
-import QuestionsTypesStat from './components/stats/questionsTypesStat';
+import {reset} from "../../redux/actions/reset";
 import Loading from './components/loading'; 
 import {
     BrowserRouter as Router,

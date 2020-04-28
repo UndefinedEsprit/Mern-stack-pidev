@@ -79,7 +79,6 @@ StudiesPage.propTypes = {
     getStudies: PropTypes.func,
     createError: PropTypes.func,
     getCountForms: PropTypes.func,
-    getNextPageOfStudies: PropTypes.func,
   }),
 };
 export const mapStateToProps = (state) => {
