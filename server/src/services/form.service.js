@@ -12,15 +12,19 @@ const groupService = new GroupService();
 const questionService = new QuestionService();
 
 class FormService {
- 
-}
-FormService.prototype.update = async (form) => {
+  getById = async (id) => {
+    let form = await Form.findById(id);
+    form.questions = await questionService.getByForm(id);
+    return form;
+  };
+
+  update = async (form) => {
     let id = form._id;
     delete form._id;
     return await Form.findOneAndUpdate({ _id: id }, form, { new: true });
   };
 
-  FormService.prototype.publish = async (data) => {
+  publish = async (data) => {
     let groups = data.groups;
     delete data.groups;
     groups.map((group) => {
@@ -36,19 +40,16 @@ FormService.prototype.update = async (form) => {
     return await this.update(data);
   };
 
-FormService.prototype.getByStudy = async (studyId) => {
+  getByStudy = async (studyId) => {
     return await Form.find({ study: { _id: studyId } });
-};
+  };
 
-FormService.prototype.delete = async (id) => {
-  await Form.findOneAndDelete({ _id: id });
-  await questionService.deleteByForm(id);
-};
-FormService.prototype.getById = async (id) => {
-  let form = await Form.findById(id);
-  form.questions = await questionService.getByForm(id);
-  return form;
-};
+  delete = async (id) => {
+    await Form.findOneAndDelete({ _id: id });
+    await questionService.deleteByForm(id);
+  };
+}
+
 FormService.prototype.getAll = (req, res) => {
   Form.find({}, (err, result) => {
     if (err) {

@@ -3,15 +3,15 @@ const mongoose = require("mongoose");
 const User = require("../models/user");
 
 class GroupService {
-}
-  GroupService.prototype.findById = async (id) => {    
+
+  findById = async (id) => {    
     let users = [];
     let group = await Group.findById(id).catch((err)=>{ return err});  
     group = await this.getUsers(group).catch(err =>{ return err});
     return(group);
   };
 
-  GroupService.prototype.getUsers = async (group) => {
+  getUsers = async (group) => {
     let users = []; 
     for (let userId in group.users) {
       users.push(await User.findById(group.users[userId]).catch((err)=>console.log(err)));
@@ -20,7 +20,7 @@ class GroupService {
     return (group);
   };
 
-
+}
 
 GroupService.prototype.getAll = (req, res) => {
   Group.find({}, (err, result) => {

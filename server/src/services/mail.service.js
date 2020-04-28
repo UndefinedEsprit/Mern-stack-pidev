@@ -1,9 +1,8 @@
 const nodemailer = require('nodemailer');
 const hbs =require('nodemailer-express-handlebars');
-
 class MailService {   
-}
-MailService.prototype.sendEmail=(user)=>{        
+
+    sendEmail=(user)=>{        
         
         let transporter = nodemailer.createTransport({
             service : 'gmail',
@@ -39,5 +38,10 @@ MailService.prototype.sendEmail=(user)=>{
             if (err) console.log(err);
             else console.log( 'Emails sent !');
         })
+    }
+
 }
+
+
+
 module.exports = MailService;
