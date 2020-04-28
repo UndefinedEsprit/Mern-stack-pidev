@@ -13,7 +13,7 @@ const questionService = new QuestionService();
 
 class FormService {
   getById = async (id) => {
-    let form = await Form.findById(id);
+    let form =await Form.findById(id);
     form.questions = await questionService.getByForm(id);
     return form;
   };
