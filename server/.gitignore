@@ -10,9 +10,6 @@
 # dependencies
 /node_modules
 
-#uploads folder
-/uploads
-
 #envirement variables
 *.env
 
