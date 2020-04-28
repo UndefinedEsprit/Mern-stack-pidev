@@ -72,7 +72,6 @@ QuestionsPage.propTypes = {
     })
 };
 export const mapStateToProps = state => {
-    //console.log(state);
     const questions = orderBy(state.questionIds.map(questionId => state.questions[questionId]));
     return { questions }; 
 };

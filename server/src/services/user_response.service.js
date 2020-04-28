@@ -29,11 +29,29 @@ UserResponseService.prototype.delete = async (req, res) => {
 };
 
 UserResponseService.prototype.getByQuestion = async (req, res) => {
-  let model = new Question(req.body);
-  const userResponse = await UserResponse.find({
-    question: { _id: model._id },
+  const userResponses = await UserResponse.find({
+    question: { _id: req.params.id},
   });
-  res.json(userResponse);
+  res.json(userResponses);
+};
+
+UserResponseService.prototype.getAnswersVolume = async (req, res) => {
+  const userResponses = await UserResponse.find({
+    question: { _id: req.params.id},
+  });
+  let answersVolumeMap = [];
+  let answers=[];
+  userResponses.map((element) => {
+    if (answers.includes(element.text)) {
+      answersVolumeMap.map((e) => {
+        if (e.answer == element.text) e.volume++;
+      });
+    } else {
+      answers.push(element.text);
+      answersVolumeMap.push({ answer: element.text, volume: 1});
+    }
+  });
+  res.json(answersVolumeMap);
 };
 
 module.exports = UserResponseService;

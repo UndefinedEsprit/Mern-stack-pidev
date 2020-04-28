@@ -23,3 +23,8 @@ export const forms = {
 export const questions = {
     GET: 'questions/get',
 };
+
+export const answers = {
+    GET: 'answers/get',
+    GETANSWERSVOLUME :'answers/getAnswersVolume'
+};

@@ -14,5 +14,7 @@ export default {
     forms: {},
     questionIds: [],
     questions: {},
+    answersVolume: {},
     countUsersResponses: {} 
+
 };

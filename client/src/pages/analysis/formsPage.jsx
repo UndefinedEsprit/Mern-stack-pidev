@@ -111,7 +111,6 @@ FormsPage.propTypes = {
   }),
 };
 export const mapStateToProps = (state) => {
-  console.log(state);
   const forms = orderBy(state.formIds.map((formId) => state.forms[formId]));
   const countQuestions = orderBy(
     state.formIds.map((formId) => state.countQuestions[formId])
