@@ -75,3 +75,27 @@ export async function GetQuestionsByForm(formId) {
   });
   return res;
 }
+
+/**
+ * Fetch questions by id from the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetQuestionById(questionId) {
+  let res;
+  await axios.get(apiUrl + "/question/" + questionId).then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+
+/**
+ * Fetch answers volume by form question the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetAnswersVolume(questionId) {
+  let res;
+  await axios.get(apiUrl + "/userresponse/getanswersvolume/" + questionId).then((response) => {
+    res = response.data;
+  });
+  return res;
+}

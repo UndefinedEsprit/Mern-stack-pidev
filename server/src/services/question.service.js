@@ -32,6 +32,7 @@ class QuestionService {
   };
 }
 
+
 QuestionService.prototype.getAll = (req, res) => {
   Question.find({}, (err, result) => {
     if (err) {
