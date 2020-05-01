@@ -1,5 +1,4 @@
 const UserResponse = require("../models/user_response");
-const Question = require("../models/question");
 const mongoose = require("mongoose");
 
 class UserResponseService {}

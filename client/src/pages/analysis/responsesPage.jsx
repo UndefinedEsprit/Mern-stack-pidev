@@ -82,7 +82,6 @@ export const mapStateToProps = (state,props) => {
     const question = state.questions[props.match.params.id];
     let isAnswered=true;
     const answersVolume =Object.keys(state.answersVolume).map(i => state.answersVolume[i]);
-    console.log(answersVolume);
     if(Object.entries(state.answersVolume).length === 0)
         isAnswered=false;
     return { question,answersVolume,isAnswered}; 

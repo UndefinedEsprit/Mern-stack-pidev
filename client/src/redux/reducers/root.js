@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { error } from './error'; 
 import * as types from '../constants/types';
 import { loading } from './loading';
-import { studies, studyIds,countForms } from '../models/study/reducers/studies';
+import { studies, studyIds,countForms,mostPublishedStudy } from '../models/study/reducers/studies';
 import { forms, formIds ,countQuestions,formsStatus} from '../models/form/reducers/forms'; 
 import { questions,questionIds} from '../models/question/reducers/questions'; 
 import { answersVolume} from '../models/response/reducers/responses';
@@ -20,7 +20,8 @@ import initialReduxState from "../constants/initialState";
     formsStatus,
     questions,
     questionIds,
-    answersVolume
+    answersVolume,
+    mostPublishedStudy
 });
    const rootReducer = (state, action) => {
     // when a reset is dispatched it will reset redux state

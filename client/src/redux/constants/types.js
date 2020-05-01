@@ -9,7 +9,8 @@ export const app = {
 
 export const studies = {
     GET: 'studies/get',
-    GETCOUNTFORMS: 'studies/getCountForms'
+    GETCOUNTFORMS: 'studies/getCountForms',
+    GETMOSTPUBLISHEDSTUDY: 'studies/getMostPublishedStudy'
 };
          
 export const forms = {

@@ -4,8 +4,6 @@ const mongoose = require("mongoose");
 const MailService = require("./mail.service");
 const GroupService = require("./group.service");
 const QuestionService = require("./question.service");
-const CountQuestions = require("../models/countQuestions");
-const FormsStatus = require("../models/formsStatus");
 
 const mailService = new MailService();
 const groupService = new GroupService();
@@ -114,10 +112,7 @@ FormService.prototype.CountQuestions = async (req, res) => {
     let questionsNumber = await QuestionService.prototype.getCountByForm(
       form._id
     );
-    let countQuestions = new CountQuestions();
-    countQuestions.setFormId(form._id);
-    countQuestions.setQuestionsNumber(questionsNumber);
-    countMap.push(countQuestions);
+    countMap.push({"formId":form._id,"questionsNumber":questionsNumber});
   }
 
   res.json(countMap);
@@ -141,11 +136,21 @@ FormService.prototype.getStatusByStudy = async (req, res) => {
   let statusMap = [];
   for (const form of forms) {
     let status = await FormService.prototype.getStatusById(form._id);
-    let formsStatus = new FormsStatus();
-    formsStatus.setFormId(form._id);
-    formsStatus.setStatus(status);
-    statusMap.push(formsStatus);
+    statusMap.push({"formId":form._id,"status":status});
   }
   res.json(statusMap);
+};
+
+FormService.prototype.getMostPublishedFormsByStudy = async () => {
+  const filter = await Form.aggregate([  
+        {"$match":{"publishedAt": { 
+          "$exists": true, 
+          "$ne": null 
+      }}},
+        {$group: {_id: "$study", count: { "$sum": 1}}},
+        {$sort: {count: -1}},
+        {$limit: 1} 
+  ]);
+  return filter[0];
 };
 module.exports = FormService;

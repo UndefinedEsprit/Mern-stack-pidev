@@ -75,5 +75,16 @@ QuestionService.prototype.getAllByForm = async (req, res) => {
   const questions = await Question.find({ form: { _id: req.params.id } });
   res.json(questions);
 };
-
+QuestionService.prototype.getQuestionsTypes = async (req,res) => {
+  const filter = await Question.aggregate([  
+    {$group: {_id: "$type", count: { "$sum": 1}}}
+  ]);
+  console.log(filter);
+  let result = {};
+for (var i = 0; i < filter.length; i++) {
+  result[filter[i]._id] =filter[i].count;
+}
+console.log(result);
+  res.json(result);
+};
 module.exports = QuestionService;

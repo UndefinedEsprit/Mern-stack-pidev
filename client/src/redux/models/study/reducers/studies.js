@@ -52,3 +52,18 @@ export function countForms(state = initialState.countForms, action) {
       return state;
   }
 }
+export function mostPublishedStudy(state = initialState.mostPublishedStudy, action) {
+  switch (action.type) {
+    case types.studies.GETMOSTPUBLISHEDSTUDY: {
+      const { mostPublishedStudy}= action;
+      let nextState = Object.assign({}, state);
+        if (!nextState[mostPublishedStudy]) {
+          nextState[mostPublishedStudy] = mostPublishedStudy;
+        }
+      return nextState;
+    }
+
+    default:
+      return state;
+  }
+}

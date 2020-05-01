@@ -7,6 +7,7 @@ const service = new StudyService();
 router.post("/", service.add);
 router.get("/", service.getAll);
 router.get("/getCountForms", service.CountForms);
+router.get("/getstudywithmostpublishedforms", service.getStudyWithMostPublishedForms);
 router.get("/:id", service.getById);
 router.put("/", service.update);
 router.delete("/", service.delete);

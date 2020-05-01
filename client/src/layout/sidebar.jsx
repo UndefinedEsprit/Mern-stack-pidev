@@ -25,7 +25,16 @@ const Sidebar = () => {
                 <i class="fas fa-tasks"></i>
                 <span class="hide-menu">Management</span>
               </a>
-            </li>            
+            </li> 
+            <li>
+              <Link
+                className="waves-effect waves-dark"
+                to="/studiespage"
+              >
+                <i class="fas fa-chart-line"></i>
+                <span class="hide-menu">Analysis and Statistics</span>
+              </Link>
+            </li>           
           </ul>
         </nav>
       </div>

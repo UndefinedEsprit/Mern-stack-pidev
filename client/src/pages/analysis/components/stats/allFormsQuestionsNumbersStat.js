@@ -1,7 +1,5 @@
 import PropTypes from "prop-types";
 import React from "react";
-//import "~react-vis/dist/style";
-//import "~react-vis/dist/styles/legends";
 import {
   XYPlot,
   XAxis,

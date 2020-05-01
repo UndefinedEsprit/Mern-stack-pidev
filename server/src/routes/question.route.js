@@ -6,6 +6,7 @@ const service = new QuestionService();
 
 router.get("/", service.getAll);
 router.get("/getbyform/:id", service.getAllByForm);
+router.get("/getquestionstypes", service.getQuestionsTypes);
 router.get("/:id", service.getById);
 
 router.post("/", (req, res) => {

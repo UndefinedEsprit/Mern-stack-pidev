@@ -17,7 +17,7 @@ const formService = new FormService();
 router.post("/new", formService.add);
 router.post("/edit", formService.edit);
 router.get("/", formService.getAll);
-
+router.get("/getmostpublishedformsbystudy", formService.getMostPublishedFormsByStudy);
 router.get("/:id", (req, res) => {
   let id = req.params.id;
   formService

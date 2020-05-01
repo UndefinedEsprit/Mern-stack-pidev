@@ -1,8 +1,7 @@
 const Study = require("../models/study");
 const mongoose = require("mongoose");
-
 const FormService = require("./form.service");
-const CountForms = require("../models/countForms");
+
 
 class StudyService {}
 
@@ -66,20 +65,22 @@ StudyService.prototype.delete = (req, res) => {
 };
 
 StudyService.prototype.CountForms = async (req, res) => {
-  console.log("im here");
   const studies = await Study.find();
-
   let countMap = [];
   for (const study of studies) {
     let formsNumber = await FormService.prototype.getCountByStudy(study._id);
-    let countForms = new CountForms();
-    countForms.setStudyName(study.name);
-    countForms.setStudyId(study._id);
-    countForms.setFormsNumber(formsNumber);
-    countMap.push(countForms);
+    countMap.push({"studyId":study._id,"studyName":study.name,"formsNumber":formsNumber});
   }
 
   res.json(countMap);
+};
+
+StudyService.prototype.getStudyWithMostPublishedForms = async (req, res) => {
+    let topStudy = await FormService.prototype.getMostPublishedFormsByStudy(res);
+    console.log(topStudy._id);
+    let study= await Study.findById(topStudy._id);
+    console.log(study);
+    res.json({"studyName":study.name , "countForms":topStudy.count,"createdAt":study.createdAt});
 };
 
 module.exports = StudyService;

@@ -89,12 +89,24 @@ export async function GetQuestionById(questionId) {
 }
 
 /**
- * Fetch answers volume by form question the API
+ * Fetch answers volume by question from the API
  * @return {Response}          Fetch API Response
  */
 export async function GetAnswersVolume(questionId) {
   let res;
   await axios.get(apiUrl + "/userresponse/getanswersvolume/" + questionId).then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+
+/**
+ * Fetch Most Published Study form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetMostPublishedStudy() {
+  let res;
+  await axios.get(apiUrl + "/study/getstudywithmostpublishedforms").then((response) => {
     res = response.data;
   });
   return res;
