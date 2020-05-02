@@ -1,8 +1,72 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { RadialChart } from "react-vis";
+import {
+  Badge,
+  Card,
+  CardBody,
+  CardHeader,
+  ListGroup,
+  ListGroupItem,
+} from 'reactstrap';
+import {
+  MdBubbleChart,
+  MdInsertChart,
+  MdPieChart,
+  MdShowChart,
+} from 'react-icons/md';
+import { getColor } from '../../utils/colors';
 
 const FormsStatusStat = (props) => {
+  const primaryColor = getColor('primary');
+  return (
+      <div>
+          <Card>
+            <CardHeader>number of questions per form</CardHeader>
+            <CardBody>
+              <DisplayStat
+                formsStatus={props.formsStatus}
+                />
+              </CardBody>
+                <ListGroup flush>
+                  <ListGroupItem>
+                    <MdInsertChart size={25} color={primaryColor} /> total number of studies{' '}
+                    <Badge color="secondary">3</Badge>
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <MdBubbleChart size={25} color={primaryColor} /> total number of forms
+                    costs <Badge color="secondary">4</Badge>
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <MdShowChart size={25} color={primaryColor} /> Financial costs{' '}
+                    <Badge color="secondary">2</Badge>
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <MdPieChart size={25} color={primaryColor} /> Other operating
+                    costs <Badge color="secondary">0</Badge>
+                  </ListGroupItem>
+                </ListGroup>
+          </Card>
+      </div>
+    ) 
+};
+
+function calculateStautsVolume(formsStatus) {
+  let statusList = [];
+  let statusMap = [];
+  formsStatus.map((element) => {
+    if (statusList.includes(element.status)) {
+      statusMap.map((e) => {
+        if (e.status == element.status) e.volume++;
+      });
+    } else {
+      statusList.push(element.status);
+      statusMap.push({ status: element.status, volume: 1 });
+    }
+  });
+  return statusMap;
+}
+const DisplayStat = (props) => {
   const { formsStatus } = props;
   let statData = [];
   let angle, subLabel, label;
@@ -30,26 +94,12 @@ const FormsStatusStat = (props) => {
       />
     </div>
   );
-};
-
+}
 FormsStatusStat.propTypes = {
   formsStatus: PropTypes.object.isRequired,
 };
-
-function calculateStautsVolume(formsStatus) {
-  let statusList = [];
-  let statusMap = [];
-  formsStatus.map((element) => {
-    if (statusList.includes(element.status)) {
-      statusMap.map((e) => {
-        if (e.status == element.status) e.volume++;
-      });
-    } else {
-      statusList.push(element.status);
-      statusMap.push({ status: element.status, volume: 1 });
-    }
-  });
-  return statusMap;
-}
+DisplayStat.propTypes = {
+  formsStatus: PropTypes.object.isRequired,
+};
 
 export default FormsStatusStat;

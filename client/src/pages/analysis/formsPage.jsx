@@ -15,11 +15,28 @@ import Loading from "./components/loading";
 import FormsStatusStat from "./components/stats/formsStatusStat";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
   useParams,
 } from "react-router-dom";
+import {
+  getStudies,
+  getCountForms,
+  getMostPublishedStudy,
+  getLatestStudy
+} from "../../redux/models/study/actions/studies";
+import Page from './components/Page';
+import {
+  Col,
+  Row,
+} from 'reactstrap';
+import Latest from "./components/latest";
+import Brief from "./components/brief" ;
+import QuestionsTypesBrief from "./components/questionsTypesBrief";
+import MostActiveUsers from "./components/mostActiveUsers";
+import FormsList from "./components/formsList";
+import {getMostActiveUsers} from "../../redux/models/user/actions/users";
+import {getQuestionsTypes} from "../../redux/models/question/actions/questions";
+import {getLatestForm,getLatestPublishedForm} from "../../redux/models/form/actions/forms";
+import {getLatestUserResponse} from "../../redux/models/response/actions/responses";
 
 function FormsPage(props) {
   const { id } = useParams();
@@ -32,6 +49,13 @@ function FormsPage(props) {
         await props.actions.getCountQuestions(id );
         await props.actions.getFormsForStudy(id );
         await props.actions.getFormsStatus(id );
+        await props.actions.getMostPublishedStudy();
+        await props.actions.getQuestionsTypes();
+        await props.actions.getMostActiveUsers();
+        await props.actions.getLatestForm();
+        await props.actions.getLatestStudy();
+        await props.actions.getLatestUserResponse();
+        await props.actions.getLatestPublishedForm(); 
         setIsLoading(false);
       } catch (e) {
         console.log(e);
@@ -40,7 +64,7 @@ function FormsPage(props) {
     };
     fetchData();
   }, []);
-  //console.log(isLoading);
+
   return (
     <div>
       {isLoading ? (
@@ -48,56 +72,52 @@ function FormsPage(props) {
           <Loading />
         </div>
       ) : (
-        <div className="">
-          <div className="row">
-            {props.forms && props.countQuestions && props.formsStatus && (
-              <>
-                <div className="col-md-4">
-                  <nav className="navbar">
-                    <ul class="navbar-nav mr-auto">
-                      {props.forms.map((form) => (
-                        <>
-                          {props.countQuestions.map((element) => {
-                            if (element.formId == form._id)
-                              return (
-                                <li class="nav-item">
-                                  <Link
-                                    class="nav-link "
-                                    key={form._id}
-                                    to={{
-                                      pathname: "/questionspage/" + form._id,
-                                    }}
-                                  >
-                                    {form.title}
-                                  </Link>
-                                </li>
-                              );
-                          })}
-                        </>
-                      ))}
-                    </ul>
-                  </nav>
-                                     
-                </div>
-                <div className="col-md-8">
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <AllFormsQuestionsNumbersStat
-                        forms={props.forms}
-                        countQuestions={props.countQuestions}
-                      />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <FormsStatusStat formsStatus={props.formsStatus} />
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
+      <Page
+        className="FormsPage"
+        title="FormssPage"
+        breadcrumbs={[{ name: 'FormsPage', active: true }]}
+      >
+      <Brief
+        mostPublishedStudy={props.mostPublishedStudy}
+      />
+      <Row>
+      <Col md="6" sm="12" xs="12">
+       <FormsList
+        forms={props.forms}
+        countQuestions={props.countQuestions}
+       />
+      </Col>
+      <Col md="6" sm="12" xs="12">
+      <MostActiveUsers
+       usersList = {props.mostActiveUsers}
+       />
+      </Col>
+    </Row>
+    <QuestionsTypesBrief
+      questionsTypes={props.questionsTypes}
+    />
+    <Row>
+      <Col lg="8" md="12" sm="12" xs="12">
+      <FormsStatusStat formsStatus={props.formsStatus} />          
+      </Col>
+      <Col lg="4" md="12" sm="12" xs="12">
+      <Latest
+        latestStudy={props.latestStudy}
+        latestForm={props.latestForm}
+        latestPublishedForm={props.latestPublishedForm}
+        latestUserResponse={props.latestUserResponse}
+        />
+      </Col>
+    </Row>
+    <Row>
+      <Col lg="8" md="12" sm="12" xs="12">
+      <AllFormsQuestionsNumbersStat
+        forms={props.forms}
+        countQuestions={props.countQuestions}
+      />          
+      </Col>
+    </Row>
+  </Page>
       )}
     </div>
   );
@@ -107,7 +127,14 @@ FormsPage.propTypes = {
     getCountQuestions: PropTypes.func,
     getFormsForStudy: PropTypes.func,
     getFormsStatus: PropTypes.func,
+    getMostPublishedStudy: PropTypes.func,
+    getQuestionsTypes: PropTypes.func,
+    getMostActiveUsers: PropTypes.func,
     reset: PropTypes.func,
+    getLatestForm: PropTypes.func,
+    getLatestPublishedForm: PropTypes.func,
+    getLatestUserResponse: PropTypes.func,
+    getLatestStudy: PropTypes.func
   }),
 };
 export const mapStateToProps = (state) => {
@@ -118,7 +145,15 @@ export const mapStateToProps = (state) => {
   const formsStatus = orderBy(
     state.formIds.map((formId) => state.formsStatus[formId])
   );
-  return { forms, countQuestions, formsStatus };
+  const mostPublishedStudy = state.mostPublishedStudy;
+  const questionsTypes = state.questionsTypes;
+  const mostActiveUsers = Object.values(state.mostActiveUsers);
+  const latestStudy= state.latestStudy;
+  const latestForm= state.latestForm;
+  const latestPublishedForm= state.latestPublishedForm;
+  const latestUserResponse= state.latestUserResponse;
+  return { forms, countQuestions, formsStatus,mostPublishedStudy,questionsTypes,mostActiveUsers,latestUserResponse,
+    latestForm,latestPublishedForm,latestStudy};
 };
 
 export const mapDispatchToProps = (dispatch) => {
@@ -129,7 +164,14 @@ export const mapDispatchToProps = (dispatch) => {
         getCountQuestions,
         getFormsForStudy,
         getFormsStatus,
-        reset
+        reset,
+        getMostPublishedStudy,
+        getQuestionsTypes,
+        getMostActiveUsers,
+        getLatestStudy,
+        getLatestUserResponse,
+        getLatestPublishedForm,
+        getLatestForm
       },
       dispatch
     ),

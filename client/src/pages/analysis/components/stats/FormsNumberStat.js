@@ -24,6 +24,7 @@ import {
 } from 'react-icons/md';
 
 const DisplayStat = (props) => {
+  const primaryColor = getColor('primary');
     const { countForms } = props;
     let data = [];
     let x, y;
@@ -40,7 +41,7 @@ const DisplayStat = (props) => {
         <XAxis />
         <YAxis
           style={{
-            line: { stroke: " #000000" },
+            line: { stroke: "#ADDDE1" },
             text: { stroke: "none", fill: "#6b6b76", fontWeight: 600 },
           }}
         />
