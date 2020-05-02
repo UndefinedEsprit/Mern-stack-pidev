@@ -1,5 +1,5 @@
 import * as types from '../../../constants/types';
-import { GetStudies,GetCountForms,GetMostPublishedStudy} from '../../../api/http';
+import { GetStudies,GetCountForms,GetMostPublishedStudy,GetLatestStudy} from '../../../api/http';
 
 export function updateAvailableStudies(studies) { 
     return {
@@ -46,4 +46,18 @@ export  function getCountForms() {
     };
 }
 
+export function getLatestStudy() {
+    let latestStudy={};
+    return async (dispatch) => {
+        latestStudy= await GetLatestStudy();
+        dispatch(updateLatestStudy(latestStudy));
+    }
+}
+
+export function updateLatestStudy( latestStudy) { 
+        return {
+            type: types.studies.GETLATESTSTUDY,
+            latestStudy
+        };
+}
 

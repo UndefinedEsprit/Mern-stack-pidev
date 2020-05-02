@@ -77,10 +77,13 @@ StudyService.prototype.CountForms = async (req, res) => {
 
 StudyService.prototype.getStudyWithMostPublishedForms = async (req, res) => {
     let topStudy = await FormService.prototype.getMostPublishedFormsByStudy(res);
-    console.log(topStudy._id);
     let study= await Study.findById(topStudy._id);
-    console.log(study);
-    res.json({"studyName":study.name , "countForms":topStudy.count,"createdAt":study.createdAt});
+    res.json({"studyId":study._id,"studyName":study.name , "countForms":topStudy.count,"createdAt":study.createdAt});
 };
+
+StudyService.prototype.getLatestStudy = async (req, res) => {
+  let study= await Study.findOne({}, {}, { sort: { 'createdAt' : -1 } });
+  res.json(study);
+}
 
 module.exports = StudyService;

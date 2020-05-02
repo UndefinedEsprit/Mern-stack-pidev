@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const mongoose = require("mongoose");
-
+const UserResponseService = require("./user_response.service");
 class UserService {}
 
 UserService.prototype.getAll = async (req, res) => {
@@ -45,5 +45,15 @@ UserService.prototype.delete = async (req, res) => {
   const user = await User.findOneAndDelete(id);
   res.json(user);
 };
+
+UserService.prototype.getMostActiveUsers = async (req, res) => {
+  let activeUsers = [];
+  let activeUsersIds = await UserResponseService.prototype.getMostActiveUsersIds();
+  for(const activeUserId of activeUsersIds ){
+    let user = await User.findById(activeUserId ._id);
+    activeUsers.push({"userId":user._id,"email":user.email,"participation":activeUserId .count,"address":user.address,"age":user.age});
+  }
+  res.json(activeUsers);
+}
 
 module.exports = UserService;

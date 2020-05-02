@@ -57,9 +57,21 @@ export function mostPublishedStudy(state = initialState.mostPublishedStudy, acti
     case types.studies.GETMOSTPUBLISHEDSTUDY: {
       const { mostPublishedStudy}= action;
       let nextState = Object.assign({}, state);
-        if (!nextState[mostPublishedStudy]) {
-          nextState[mostPublishedStudy] = mostPublishedStudy;
-        }
+        nextState=mostPublishedStudy;
+      return nextState;
+    }
+
+    default:
+      return state;
+  }
+}
+
+export function latestStudy(state = initialState.latestStudy, action) {
+  switch (action.type) {
+    case types.studies.GETLATESTSTUDY: {
+      const {latestStudy}= action;
+      let nextState = Object.assign({}, state);
+        nextState=latestStudy;
       return nextState;
     }
 

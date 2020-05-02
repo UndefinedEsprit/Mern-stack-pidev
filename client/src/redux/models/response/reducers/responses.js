@@ -19,5 +19,19 @@ export function answersVolume(state = initialState.answersVolume, action) {
     }
 }
 
+export function latestUserResponse(state = initialState.latestUserResponse, action) {
+    switch (action.type) {
+      case types.answers.GETLATESTUSERRESPONSE: {
+        const {latestUserResponse}= action;
+        let nextState = Object.assign({}, state);
+          nextState=latestUserResponse;
+        return nextState;
+      }
+  
+      default:
+        return state;
+    }
+}
+
 
 

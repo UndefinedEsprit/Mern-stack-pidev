@@ -1,5 +1,9 @@
 const UserResponse = require("../models/user_response");
 const mongoose = require("mongoose");
+const User = require("../models/user");
+const Question = require("../models/question");
+const Form =require("../models/form");
+const Study =require("../models/study");
 
 class UserResponseService {}
 
@@ -53,4 +57,21 @@ UserResponseService.prototype.getAnswersVolume = async (req, res) => {
   res.json(answersVolumeMap);
 };
 
+UserResponseService.prototype.getMostActiveUsersIds = async () => {
+  const filter = await UserResponse.aggregate([  
+        {$group: {_id: "$user", count: { "$sum": 1}}},
+        {$sort: {count: -1}},
+        {$limit: 5} 
+  ]);
+  return filter;
+};
+
+UserResponseService.prototype.getLatestUserResponse = async (req, res) => {
+  let userResponse= await UserResponse.findOne({}, {}, { sort: { 'createdAt' : -1 } });
+  let user = await User.findById(userResponse.user); 
+  let question = await Question.findById(userResponse.question); 
+  let form = await Form.findById(question.form); 
+  let study = await Study.findById(form.study); 
+  res.json({"text":userResponse.text,"userEmail":user.email,"questionText":question.text,"formTitle":form.title,"studyName":study.name});
+}
 module.exports = UserResponseService;

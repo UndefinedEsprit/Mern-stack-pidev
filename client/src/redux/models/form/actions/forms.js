@@ -1,6 +1,6 @@
 import * as types from '../../../constants/types';
 import { GetFormsByStudy,GetCountQuestions} from '../../../api/http';
-import {GetFormsStatusByStudy} from '../../../api/http';
+import {GetFormsStatusByStudy,GetLatestForm,GetLatestPublishedForm} from '../../../api/http';
 export function showForms(studyId) { 
     return {
         type: types.forms.SHOW,
@@ -57,3 +57,32 @@ export function updateAvailableForms(forms) {
     };
 }
 
+export function getLatestForm() {
+    let latestForm={};
+    return async (dispatch) => {
+        latestForm= await GetLatestForm();
+        dispatch(updateLatestForm(latestForm));
+    }
+}
+
+export function updateLatestForm( latestForm) { 
+        return {
+            type: types.forms.GETLATESTFORM,
+            latestForm
+        };
+}
+
+export function getLatestPublishedForm() {
+    let latestPublishedForm={};
+    return async (dispatch) => {
+        latestPublishedForm= await GetLatestPublishedForm();
+        dispatch(updateLatestPublishedForm(latestPublishedForm));
+    }
+}
+
+export function updateLatestPublishedForm( latestPublishedForm) { 
+        return {
+            type: types.forms.GETLATESTPUBLISHEDFORM,
+            latestPublishedForm
+        };
+}

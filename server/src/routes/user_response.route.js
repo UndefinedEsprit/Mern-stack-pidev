@@ -6,7 +6,9 @@ const service = new UserResponseService();
 
 router.post('/',service.add);
 router.get('/',service.getAll);
-router.get('/:id',service.getById);
+router.get("/getLatestUserResponse", service.getLatestUserResponse);
 router.get('/getanswersvolume/:id',service.getAnswersVolume);
+router.get('/:id',service.getById);
+
 
 module.exports = router;

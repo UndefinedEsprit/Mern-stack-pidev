@@ -79,12 +79,12 @@ QuestionService.prototype.getQuestionsTypes = async (req,res) => {
   const filter = await Question.aggregate([  
     {$group: {_id: "$type", count: { "$sum": 1}}}
   ]);
-  console.log(filter);
   let result = {};
 for (var i = 0; i < filter.length; i++) {
+  if(filter[i]._id == "yes/no")
+  filter[i]._id ="YesNo";
   result[filter[i]._id] =filter[i].count;
 }
-console.log(result);
   res.json(result);
 };
 module.exports = QuestionService;

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const MailService = require("./mail.service");
 const GroupService = require("./group.service");
 const QuestionService = require("./question.service");
+const Study =require("../models/study");
 
 const mailService = new MailService();
 const groupService = new GroupService();
@@ -153,4 +154,17 @@ FormService.prototype.getMostPublishedFormsByStudy = async () => {
   ]);
   return filter[0];
 };
+
+FormService.prototype.getLatestForm = async (req, res) => {
+  let form= await Form.findOne({}, {}, { sort: { 'createdAt' : -1 } });
+  let study = await Study.findById(form.study); 
+  res.json({"title":form.title,"studyName": study.name});
+}
+
+FormService.prototype.getLatestPublishedForm = async (req, res) => {
+  let form= await Form.findOne({}, {}, { sort: { 'publishedAt' : -1 } });
+  let study = await Study.findById(form.study); 
+  res.json({"title":form.title,"studyName": study.name});
+}
+
 module.exports = FormService;

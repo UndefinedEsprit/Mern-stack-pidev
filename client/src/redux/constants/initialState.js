@@ -15,6 +15,12 @@ export default {
     questionIds: [],
     questions: {},
     answersVolume: {},
-    mostPublishedStudy:{}
+    questionsTypes:{},
+    mostPublishedStudy:{},
+    mostActiveUsers:{},
+    latestStudy: {},
+    latestForm: {},
+    latestPublishedForm: {},
+    latestUserResponse: {},
 
 };

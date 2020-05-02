@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import orderBy from "lodash/orderBy";
+import {reset} from "../../redux/actions/reset";
 import {
   getStudies,
   getCountForms,
-  getMostPublishedStudy
+  getMostPublishedStudy,
+  getLatestStudy
 } from "../../redux/models/study/actions/studies";
 import Page from './components/Page';
 import {
@@ -19,7 +21,12 @@ import QuestionsTypesBrief from "./components/questionsTypesBrief";
 import MostActiveUsers from "./components/mostActiveUsers";
 import FormsNumberStat from "./components/stats/FormsNumberStat";
 import StudiesList from "./components/studiesList";
+import {getMostActiveUsers} from "../../redux/models/user/actions/users";
+import {getQuestionsTypes} from "../../redux/models/question/actions/questions";
+import {getLatestForm,getLatestPublishedForm} from "../../redux/models/form/actions/forms";
+import {getLatestUserResponse} from "../../redux/models/response/actions/responses";
 
+import Loading from "./components/loading";
 function AnalysisHome(props) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,9 +34,16 @@ function AnalysisHome(props) {
     const fetchData = async () => {
       try {
         setIsLoading(true);
+        await props.actions.reset();
         await props.actions.getCountForms();
         await props.actions.getStudies();
         await props.actions.getMostPublishedStudy();
+        await props.actions.getQuestionsTypes();
+        await props.actions.getMostActiveUsers();
+        await props.actions.getLatestForm();
+        await props.actions.getLatestStudy();
+        await props.actions.getLatestUserResponse();
+        await props.actions.getLatestPublishedForm();      
         setIsLoading(false);
       } catch (e) {
         console.log(e);
@@ -38,13 +52,22 @@ function AnalysisHome(props) {
     };
     fetchData();
   }, []);
+
   return (
+  <div>
+      {isLoading ? (
+        <div>
+          <Loading />
+        </div>
+      ) : (
     <Page
     className="StudiesPage"
     title="StudiesPage"
     breadcrumbs={[{ name: 'StudiesPage', active: true }]}
     >
-      <Brief/>
+      <Brief
+      mostPublishedStudy={props.mostPublishedStudy}
+      />
       <Row>
       <Col md="6" sm="12" xs="12">
        <StudiesList
@@ -53,10 +76,14 @@ function AnalysisHome(props) {
        />
       </Col>
       <Col md="6" sm="12" xs="12">
-       <MostActiveUsers/>
+      <MostActiveUsers
+       usersList = {props.mostActiveUsers}
+       />
       </Col>
     </Row>
-    <QuestionsTypesBrief/>
+    <QuestionsTypesBrief
+    questionsTypes={props.questionsTypes}
+    />
     <Row>
       <Col lg="8" md="12" sm="12" xs="12">
         <FormsNumberStat
@@ -64,21 +91,40 @@ function AnalysisHome(props) {
         />           
       </Col>
       <Col lg="4" md="12" sm="12" xs="12">
-        <Latest/>
+      <Latest
+        latestStudy={props.latestStudy}
+        latestForm={props.latestForm}
+        latestPublishedForm={props.latestPublishedForm}
+        latestUserResponse={props.latestUserResponse}
+        />
       </Col>
     </Row>
   </Page>
+    )}
+</div>
   );
 }
 AnalysisHome.propTypes = {
   studies: PropTypes.arrayOf(PropTypes.object),
   countForms: PropTypes.arrayOf(PropTypes.object),
   mostPublishedStudy:PropTypes.object,
+  mostActiveUsers:PropTypes.object,
+  latestForm:PropTypes.object,
+  latestPublishedForm:PropTypes.object,
+  latestUserResponse:PropTypes.object,
+  latestStudy:PropTypes.object,
   actions: PropTypes.shape({
     getStudies: PropTypes.func,
     createError: PropTypes.func,
     getCountForms: PropTypes.func,
     getMostPublishedStudy: PropTypes.func,
+    getQuestionsTypes: PropTypes.func,
+    getMostActiveUsers: PropTypes.func,
+    reset: PropTypes.func,
+    getLatestForm: PropTypes.func,
+    getLatestPublishedForm: PropTypes.func,
+    getLatestUserResponse: PropTypes.func,
+    getLatestStudy: PropTypes.func,
   }),
 };
 export const mapStateToProps = (state) => {
@@ -89,17 +135,30 @@ export const mapStateToProps = (state) => {
     state.studyIds.map((studyId) => state.countForms[studyId])
   );
   const mostPublishedStudy = state.mostPublishedStudy;
-  console.log(mostPublishedStudy) ;
-  return { studies, countForms,mostPublishedStudy };
+  const questionsTypes = state.questionsTypes;
+  const mostActiveUsers = Object.values(state.mostActiveUsers);
+  const latestStudy= state.latestStudy;
+  const latestForm= state.latestForm;
+  const latestPublishedForm= state.latestPublishedForm;
+  const latestUserResponse= state.latestUserResponse;
+  return { studies, countForms,mostPublishedStudy,questionsTypes,mostActiveUsers,latestUserResponse,
+    latestForm,latestPublishedForm,latestStudy};
 };
 
 export const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(
       {
+        reset,
         getStudies,
         getCountForms,
-        getMostPublishedStudy
+        getMostPublishedStudy,
+        getQuestionsTypes,
+        getMostActiveUsers,
+        getLatestStudy,
+        getLatestUserResponse,
+        getLatestPublishedForm,
+        getLatestForm
       },
       dispatch
     ),

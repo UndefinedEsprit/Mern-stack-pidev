@@ -26,7 +26,7 @@ const StudiesList = (props) => {
                                                 <Link  key={study._id}
                                                 to={{ pathname: "/formspage/" + study._id }}><h3>{study.name}</h3></Link>
                                                 <p>contains {element.formsNumber} forms</p> 
-                                                <p>created in {new Date(study.createdAt).toISOString().substring(0, 10)}</p>
+                                                <p>created at {new Date(study.createdAt).toISOString().substring(0, 10)}</p>
                                             </div>
                                         </div>
                                     );

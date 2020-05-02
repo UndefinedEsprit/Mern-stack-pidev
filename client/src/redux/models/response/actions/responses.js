@@ -1,5 +1,5 @@
 import * as types from '../../../constants/types';
-import {GetAnswersVolume} from '../../../api/http';
+import {GetAnswersVolume,GetLatestUserResponse} from '../../../api/http';
 
 
 
@@ -14,5 +14,19 @@ export function updateAnswersVolume(answersVolume) {
     return {
         type: types.answers.GETANSWERSVOLUME,
         answersVolume
+    };
+}
+
+export function getLatestUserResponse(){ 
+    let latestUserResponse={};
+    return async (dispatch) => { 
+        latestUserResponse=  await GetLatestUserResponse();
+        dispatch (updateLatestUserResponse(latestUserResponse)); 
+    }  
+}
+export function updateLatestUserResponse(latestUserResponse) {
+    return {
+        type: types.answers.GETLATESTUSERRESPONSE,
+        latestUserResponse
     };
 }

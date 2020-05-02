@@ -1,4 +1,5 @@
 import React, {  useState } from 'react';
+import PropTypes from "prop-types";
 import { NumberWidget } from './Widget';
 import { BsFillCaretDownFill } from "react-icons/bs";
 import {
@@ -7,12 +8,9 @@ import {
     Row,
     Popover,
     PopoverBody,
-    Card,
-  CardBody,
-  CardText,
-  CardTitle,
   } from 'reactstrap';
-function Brief() {
+const Brief = (props) => {
+  const { mostPublishedStudy } = props;
   const [isOpenFirst, setIsOpenFirst] = useState(false);
   const toggleFirst = () => {
        setIsOpenFirst(!isOpenFirst)
@@ -29,6 +27,7 @@ function Brief() {
   const toggleFourth = () => {
        setIsOpenFourth(!isOpenFourth)
   };
+  //{new Date(mostPublishedStudy.createdAt).toISOString().substring(0, 10)}
     return (
         <div>
             <Row>
@@ -37,9 +36,9 @@ function Brief() {
          < BsFillCaretDownFill size={20} color={"back"} />
         <NumberWidget
         onClick={toggleFirst }
-        title="most answered question"
-          subtitle="This question"
-          number="9 answers"
+        title="most published study"
+          subtitle={mostPublishedStudy.studyName}
+          number={mostPublishedStudy.countForms} 
           
         /> 
          
@@ -57,9 +56,12 @@ function Brief() {
                 borderWidth:"thin",
                 backgroundColor:"#f0f2f0", 
               }}>
-                <h6>question type multilpe1</h6>
+                <h7> {mostPublishedStudy.studyName}</h7>
+                <h7> was created at</h7>
+                <h7> {mostPublishedStudy.createdAt}  </h7>
+                <h7> containing {mostPublishedStudy.countForms} published
+                 forms </h7>
              <br></br>
-             <h6>belonging to this form1</h6>
             
                 </PopoverBody>
                 </Popover>
@@ -172,6 +174,8 @@ function Brief() {
         </div>
     ) 
 }
-
+Brief.propTypes = {
+  mostPublishedStudy: PropTypes.object.isRequired,
+};
 
 export default Brief;

@@ -70,3 +70,31 @@ export function formsStatus(state = initialState.formsStatus, action) {
             return state;
     }
 }
+
+export function latestForm(state = initialState.latestForm, action) {
+    switch (action.type) {
+      case types.forms.GETLATESTFORM: {
+        const {latestForm}= action;
+        let nextState = Object.assign({}, state);
+          nextState=latestForm;
+        return nextState;
+      }
+  
+      default:
+        return state;
+    }
+}
+
+export function latestPublishedForm(state = initialState.latestPublishedForm, action) {
+    switch (action.type) {
+      case types.forms.GETLATESTPUBLISHEDFORM: {
+        const {latestPublishedForm}= action;
+        let nextState = Object.assign({}, state);
+          nextState=latestPublishedForm;
+        return nextState;
+      }
+  
+      default:
+        return state;
+    }
+}

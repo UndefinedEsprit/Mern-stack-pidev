@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import { getColor } from '../utils/colors';
 import {
     Badge,
@@ -24,7 +25,7 @@ import {
     MdShowChart,
     MdThumbUp,
   } from 'react-icons/md';
-function Latest() {
+const Latest= (props) => { 
     const primaryColor = getColor('primary');
     return (
         <div>
@@ -33,25 +34,29 @@ function Latest() {
           <ListGroup flush>
             <ListGroupItem>
               <MdInsertChart size={25} color={primaryColor} /> Latest study{' '}
-              <Badge color="secondary">thiss study</Badge>
+             '{props.latestStudy.name}'
             </ListGroupItem>
             <ListGroupItem>
-              <MdBubbleChart size={25} color={primaryColor} /> Latest form
-              <Badge color="secondary">this form</Badge>
+              <MdBubbleChart size={25} color={primaryColor} /> Latest form {' '}'
+              {props.latestForm.title}' from the study '{props.latestPublishedForm.studyName}'
             </ListGroupItem>
             <ListGroupItem>
-              <MdShowChart size={25} color={primaryColor} /> Latest user response{' '}
-              <Badge color="secondary">this answer</Badge>
+              <MdShowChart size={25} color={primaryColor} /> Latest published form{' '}
+             '{props.latestPublishedForm.title}' from the study '{props.latestPublishedForm.studyName}'
             </ListGroupItem>
             <ListGroupItem>
-              <MdPieChart size={25} color={primaryColor} /> Latest user
-               <Badge color="secondary">this user</Badge>
+              <MdPieChart size={25} color={primaryColor} /> Latest answer was from '{props.latestUserResponse.userEmail}' responding by '{props.latestUserResponse.text}' for the question '{props.latestUserResponse.questionText}' askend in '{props.latestUserResponse.formTitle}' in the study '{props.latestUserResponse.studyName}'             
             </ListGroupItem>
           </ListGroup>
         </Card>
         </div>
     ) 
 }
-
+Latest.propTypes = {
+  latestForm: PropTypes.object.isRequired,
+  latestPublishedForm: PropTypes.object.isRequired,
+  latestUserResponse: PropTypes.object.isRequired,
+  latestStudy: PropTypes.object.isRequired,
+};
 
 export default Latest;

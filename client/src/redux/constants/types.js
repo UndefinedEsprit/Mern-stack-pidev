@@ -10,7 +10,8 @@ export const app = {
 export const studies = {
     GET: 'studies/get',
     GETCOUNTFORMS: 'studies/getCountForms',
-    GETMOSTPUBLISHEDSTUDY: 'studies/getMostPublishedStudy'
+    GETMOSTPUBLISHEDSTUDY: 'studies/getMostPublishedStudy',
+    GETLATESTSTUDY:  "studies/getLatestStudy",
 };
          
 export const forms = {
@@ -18,14 +19,22 @@ export const forms = {
     SHOW: 'forms/show',
     TOGGLE: 'forms/toggle',
     GETCOUNTQUESTIONS: 'forms/getCountQuestions',
-    GETFORMSSTATUS: 'forms/getFormsStaus'
+    GETFORMSSTATUS: 'forms/getFormsStaus',
+    GETLATESTFORM:  "forms/getLatestForm",
+    GETLATESTPUBLISHEDFORM: "forms/getLatestPublishedForm" 
 };
 
 export const questions = {
     GET: 'questions/get',
+    GETQUESTIONSTYPES: 'questions/getQuestionsTypes'
+};
+
+export const users = {
+    GETMOSTACTIVEUSERS: 'users/getMostActiveUsers',
 };
 
 export const answers = {
     GET: 'answers/get',
-    GETANSWERSVOLUME :'answers/getAnswersVolume'
+    GETANSWERSVOLUME :'answers/getAnswersVolume',
+    GETLATESTUSERRESPONSE: "answers/getLatestUserResponse"
 };

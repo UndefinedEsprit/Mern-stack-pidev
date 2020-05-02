@@ -1,4 +1,4 @@
-
+import PropTypes from "prop-types";
 import React from 'react';
 import {
     Card,
@@ -7,8 +7,12 @@ import {
   } from 'reactstrap';
   import UserProgressTable from './UserProgressTable';
 
-function MostActiveUsers() {
-   
+const MostActiveUsers= (props) => { 
+    const {usersList} = props;
+    let usersListData=[];
+    usersList.map((user)=>{
+        usersListData.push({email:user.email,age:user.age,address:user.address,participation:user.participation});
+    })   
     return (
         <div>
             <Card>
@@ -21,13 +25,15 @@ function MostActiveUsers() {
                             'address',
                             'participation',
                         ]}
-                        usersData={[{email:"dhia@esprit.tn",age:25,address:"kef",participation:5},{email:"mahdi@esprit.tn",age:24,address:"gafsa",participation:2}]}
+                        usersData={usersListData}
                     />
                 </CardBody>
             </Card>
         </div>
     ) 
 }
-
+MostActiveUsers.propTypes = {
+    usersList: PropTypes.object.isRequired,
+};
 
 export default MostActiveUsers;

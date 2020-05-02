@@ -111,3 +111,74 @@ export async function GetMostPublishedStudy() {
   });
   return res;
 }
+/**
+ * Fetch all questions types form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetQuestionsTypes() {
+  let res;
+  await axios.get(apiUrl + "/question/getquestionstypes").then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+
+/**
+ * Fetch most active users globally form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetMostActiveUsers() {
+  let res;
+  await axios.get(apiUrl + "/user/getStudyWithMostPublishedForms").then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+
+/**
+ * Fetch latest study form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetLatestStudy() {
+  let res;
+  await axios.get(apiUrl + "/study/getLatestStudy").then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+
+/**
+ * Fetch latest form form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetLatestForm() {
+  let res;
+  await axios.get(apiUrl + "/form/getLatestForm").then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+
+/**
+ * Fetch latest paublished form form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetLatestPublishedForm() {
+  let res;
+  await axios.get(apiUrl + "/form/getLatestPublishedForm").then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+
+/**
+ * Fetch latest User Response form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetLatestUserResponse() {
+  let res;
+  await axios.get(apiUrl + "/userResponse/getLatestUserResponse").then((response) => {
+    res = response.data;
+  });
+  return res;
+}

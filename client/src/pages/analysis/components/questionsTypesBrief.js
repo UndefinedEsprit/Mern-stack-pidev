@@ -1,4 +1,4 @@
-
+import PropTypes from "prop-types";
 import React from 'react';
 import {
     MdThumbUp
@@ -10,7 +10,8 @@ import {
 import {CardGroup} from 'reactstrap';
   import { IconWidget } from './Widget';
 
-function QuestionsTypesBrief() {
+const QuestionsTypesBrief= (props) => { 
+  const {questionsTypes } = props;
    
     return (
         <div>
@@ -19,27 +20,30 @@ function QuestionsTypesBrief() {
         bgColor="white"
         inverse={false}
         icon={AiOutlinePercentage}
-        title="50"
+        title={questionsTypes.rating}
         subtitle="rating questions"
       />
       <IconWidget
         bgColor="white"
         inverse={false}
         icon={AiFillDatabase}
-        title="10"
+        title={questionsTypes.multiple}
         subtitle="multiple questions"
       />
       <IconWidget
         bgColor="white"
         inverse={false}
         icon={MdThumbUp}
-        title="30"
+        title={questionsTypes.YesNo}
         subtitle="yes/no questions"
       />
     </CardGroup>
         </div>
     ) 
 }
+QuestionsTypesBrief.propTypes = {
+  questionsTypes: PropTypes.object.isRequired,
 
+};
 
 export default QuestionsTypesBrief;

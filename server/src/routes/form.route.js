@@ -14,6 +14,11 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 const formService = new FormService();
 
+router.get("/getLatestForm", formService.getLatestForm);
+router.get("/getLatestPublishedForm", formService.getLatestPublishedForm);
+router.get("/getStatusByStudy/:id", formService.getStatusByStudy);
+router.get("/getCountQuestions/:id", formService.CountQuestions);
+
 router.post("/new", formService.add);
 router.post("/edit", formService.edit);
 router.get("/", formService.getAll);
@@ -74,7 +79,5 @@ router.post("/upload", upload.array("file"), (req, res, next) => {
   res.status(200).json({ message: "images successfully saved" });
 });
 
-router.get("/getStatusByStudy/:id", formService.getStatusByStudy);
-router.get("/getCountQuestions/:id", formService.CountQuestions);
 
 module.exports = router;

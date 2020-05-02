@@ -6,9 +6,9 @@ const service = new UserService();
 
 router.post("/", service.add);
 router.get("/", service.getAll);
-router.get("/:id", service.getById);
+router.get("/getStudyWithMostPublishedForms", service.getMostActiveUsers);
 router.put("/", service.update);
 router.delete("/", service.delete);
 router.get("/getByCriteria", service.getByCriteria);
-
+router.get("/:id", service.getById);
 module.exports = router;

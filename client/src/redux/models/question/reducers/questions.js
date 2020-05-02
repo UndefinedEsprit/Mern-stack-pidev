@@ -36,4 +36,15 @@ export function questionIds(state = initialState.questionIds, action) {
     }
 }
 
-
+export function questionsTypes(state = initialState.questionsTypes, action) {
+        switch (action.type) { 
+            case types.questions.GETQUESTIONSTYPES: { 
+                const { questionsTypes} = action; 
+                let nextState = Object.assign({}, state);
+                nextState = questionsTypes;
+                return nextState;
+            }
+            default: 
+                return state;
+        }
+    }
