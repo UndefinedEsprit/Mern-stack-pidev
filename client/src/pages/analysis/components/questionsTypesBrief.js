@@ -7,7 +7,12 @@ import {
     AiOutlinePercentage,
     AiFillDatabase
   } from 'react-icons/ai';
-import {CardGroup} from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardGroup,
+  CardHeader,
+} from 'reactstrap';
   import { IconWidget } from './Widget';
 
 const QuestionsTypesBrief= (props) => { 
@@ -15,6 +20,9 @@ const QuestionsTypesBrief= (props) => {
    
     return (
         <div>
+          <Card>
+                <CardHeader>all questions types</CardHeader>
+                <CardBody>
              <CardGroup style={{ marginBottom: '1rem' }}>
       <IconWidget
         bgColor="white"
@@ -38,6 +46,8 @@ const QuestionsTypesBrief= (props) => {
         subtitle="yes/no questions"
       />
     </CardGroup>
+    </CardBody>
+    </Card>
         </div>
     ) 
 }

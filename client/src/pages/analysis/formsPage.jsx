@@ -18,8 +18,6 @@ import {
   useParams,
 } from "react-router-dom";
 import {
-  getStudies,
-  getCountForms,
   getMostPublishedStudy,
   getLatestStudy
 } from "../../redux/models/study/actions/studies";
@@ -74,7 +72,7 @@ function FormsPage(props) {
       ) : (
       <Page
         className="FormsPage"
-        title="FormssPage"
+        title="FormsPage"
         breadcrumbs={[{ name: 'FormsPage', active: true }]}
       >
       <Brief
