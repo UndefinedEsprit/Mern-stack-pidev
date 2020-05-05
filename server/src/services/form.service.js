@@ -121,15 +121,18 @@ FormService.prototype.CountQuestions = async (req, res) => {
 
 FormService.prototype.getStatusById = async (id) => {
   const form = await Form.findById(id);
-  if (form.expiresAt) {
+  var date = new Date();
+  var timestamp = date.getTime();
+  if (form.expiresAt<timestamp) {
     return "expired";
-  } else {
-    if (form.publishedAt) {
+  } 
+  else if (form.publishedAt) {
       return "published";
-    } else {
+  } 
+  else {
       return "unpublished";
-    }
   }
+  
 };
 
 FormService.prototype.getStatusByStudy = async (req, res) => {
@@ -165,6 +168,11 @@ FormService.prototype.getLatestPublishedForm = async (req, res) => {
   let form= await Form.findOne({}, {}, { sort: { 'publishedAt' : -1 } });
   let study = await Study.findById(form.study); 
   res.json({"title":form.title,"studyName": study.name});
+}
+
+FormService.prototype.getNumberOfAnswersById = async (req, res) => {
+  let numberOfAnswers = await QuestionService.prototype.getNumberOfAnswersByForm(req.params.id);
+  res.json(numberOfAnswers); 
 }
 
 module.exports = FormService;

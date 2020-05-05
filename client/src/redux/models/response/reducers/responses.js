@@ -33,5 +33,36 @@ export function latestUserResponse(state = initialState.latestUserResponse, acti
     }
 }
 
+export function mostAnsweredQuestion(state = initialState.mostAnsweredQuestion, action) {
+  switch (action.type) {
+    case types.answers.GETMOSTANSWEREDQUESTION: {
+      const {mostAnsweredQuestion}= action;
+      let nextState = Object.assign({}, state);
+        nextState=mostAnsweredQuestion;
+      return nextState;
+    }
+
+    default:
+      return state;
+  }
+}
+
+export function numberOfAnswers(state = initialState.numberOfAnswers, action) {
+  switch (action.type) {
+    case types.answers.GETNUMBEROFANSWERS: {
+      const {numberOfAnswers}= action;
+      let nextState = Object.assign({}, state);
+      for (let numberOfAnswer of numberOfAnswers) {
+        if (!nextState[numberOfAnswer.questionText]) {
+          nextState[numberOfAnswer.questionText] = numberOfAnswer;
+        }
+      }
+      return nextState;
+    }
+
+    default:
+      return state;
+  }
+}
 
 

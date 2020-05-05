@@ -16,6 +16,7 @@ const formService = new FormService();
 
 router.get("/getLatestForm", formService.getLatestForm);
 router.get("/getLatestPublishedForm", formService.getLatestPublishedForm);
+router.get("/getNumberOfAnswersByForm/:id", formService.getNumberOfAnswersById);
 router.get("/getStatusByStudy/:id", formService.getStatusByStudy);
 router.get("/getCountQuestions/:id", formService.CountQuestions);
 
@@ -55,7 +56,6 @@ router.put("/", (req, res) => {
 
 router.get("/getbystudy/:id", (req, res) => {
   let studyId = req.params.id;
-  console.log(studyId);
   formService
     .getByStudy(studyId)
     .then((result) => res.send(result))

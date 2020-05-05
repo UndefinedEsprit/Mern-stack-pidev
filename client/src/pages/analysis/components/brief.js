@@ -10,7 +10,7 @@ import {
     PopoverBody,
   } from 'reactstrap';
 const Brief = (props) => {
-  const { mostPublishedStudy } = props;
+  const { mostPublishedStudy ,mostAnsweredQuestion} = props;
   const [isOpenFirst, setIsOpenFirst] = useState(false);
   const toggleFirst = () => {
        setIsOpenFirst(!isOpenFirst)
@@ -59,9 +59,7 @@ const Brief = (props) => {
                 <h7> {mostPublishedStudy.studyName}</h7>
                 <h7> was created at</h7>
                 <h7> {mostPublishedStudy.createdAt}  </h7>
-                <h7> containing {mostPublishedStudy.countForms} published
-                 forms </h7>
-             <br></br>
+                <h7> containing {mostPublishedStudy.countForms} published forms</h7>
             
                 </PopoverBody>
                 </Popover>
@@ -74,8 +72,8 @@ const Brief = (props) => {
         <NumberWidget
         onClick={toggleSecond }
         title="most answered question"
-          subtitle="This question"
-          number="9 answers"
+          subtitle={mostAnsweredQuestion.questionText}
+          number={mostAnsweredQuestion.count}
           
         /> 
          
@@ -94,9 +92,10 @@ const Brief = (props) => {
                 backgroundColor:"#f0f2f0", 
 
               }}>
-                <h6>question type multilpe2</h6>
-             <br></br>
-             <h6>belonging to this form2</h6>
+                <h7> {mostAnsweredQuestion.questionText}</h7>
+                <h7> asked in the form </h7>
+                <h7> '{mostAnsweredQuestion.formTitle}' </h7>
+                <h7> in the study  '{mostAnsweredQuestion.studyName}' </h7>
             
                 </PopoverBody>
                 </Popover>
@@ -176,6 +175,7 @@ const Brief = (props) => {
 }
 Brief.propTypes = {
   mostPublishedStudy: PropTypes.object.isRequired,
+  mostAnsweredQuestion: PropTypes.object.isRequired,
 };
 
 export default Brief;

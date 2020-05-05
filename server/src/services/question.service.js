@@ -1,5 +1,6 @@
 const Question = require("../models/question");
 const Form = require("../models/form");
+const UserResponseService= require("./user_response.service");
 const mongoose = require("mongoose");
 
 class QuestionService {
@@ -87,4 +88,16 @@ for (var i = 0; i < filter.length; i++) {
 }
   res.json(result);
 };
+
+QuestionService.prototype.getNumberOfAnswersByForm=async(formId)=>{
+  const questions = await Question.find({ form: { _id: formId } });
+  let numberOfAnswers= [];
+  for (const question of questions) {
+    let questionNumberOfAnswers = await UserResponseService.prototype.getNumberOfAnswersByQuestion(question._id);
+    numberOfAnswers.push({ "questionText": question.text, "numberOfAnswers": questionNumberOfAnswers.count });
+  };
+  return numberOfAnswers; 
+}
 module.exports = QuestionService;
+
+

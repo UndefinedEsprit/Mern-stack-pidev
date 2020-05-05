@@ -22,5 +22,7 @@ export default {
     latestForm: {},
     latestPublishedForm: {},
     latestUserResponse: {},
+    mostAnsweredQuestion: {},
+    numberOfAnswers: {}
 
 };

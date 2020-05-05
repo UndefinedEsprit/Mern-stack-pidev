@@ -22,7 +22,7 @@ const FormsStatusStat = (props) => {
   return (
       <div>
           <Card>
-            <CardHeader>number of questions per form</CardHeader>
+            <CardHeader>forms stauts</CardHeader>
             <CardBody>
               <DisplayStat
                 formsStatus={props.formsStatus}

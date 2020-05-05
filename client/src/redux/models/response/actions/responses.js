@@ -1,5 +1,5 @@
 import * as types from '../../../constants/types';
-import {GetAnswersVolume,GetLatestUserResponse} from '../../../api/http';
+import {GetAnswersVolume,GetLatestUserResponse,GetMostAnsweredQuestion,GetNumberOfAnswersByForm} from '../../../api/http';
 
 
 
@@ -28,5 +28,32 @@ export function updateLatestUserResponse(latestUserResponse) {
     return {
         type: types.answers.GETLATESTUSERRESPONSE,
         latestUserResponse
+    };
+}
+
+export function getMostAnsweredQuestion(){ 
+    let mostAnsweredQuestion={};
+    return async (dispatch) => { 
+        mostAnsweredQuestion=  await GetMostAnsweredQuestion();
+        dispatch (updateMostAnsweredQuestion(mostAnsweredQuestion)); 
+    }  
+}
+export function updateMostAnsweredQuestion(mostAnsweredQuestion) {
+    return {
+        type: types.answers.GETMOSTANSWEREDQUESTION,
+        mostAnsweredQuestion
+    };
+}
+export function getNumberOfAnswersByForm(id){ 
+    let numberOfAnswers={};
+    return async (dispatch) => { 
+        numberOfAnswers=  await GetNumberOfAnswersByForm(id);
+        dispatch (updateNumberOfAnswers(numberOfAnswers)); 
+    }  
+}
+export function updateNumberOfAnswers(numberOfAnswers) {
+    return {
+        type: types.answers.GETNUMBEROFANSWERS,
+        numberOfAnswers
     };
 }

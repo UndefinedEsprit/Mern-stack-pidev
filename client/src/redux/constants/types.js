@@ -26,7 +26,8 @@ export const forms = {
 
 export const questions = {
     GET: 'questions/get',
-    GETQUESTIONSTYPES: 'questions/getQuestionsTypes'
+    GETQUESTIONSTYPES: 'questions/getQuestionsTypes',
+    
 };
 
 export const users = {
@@ -36,5 +37,7 @@ export const users = {
 export const answers = {
     GET: 'answers/get',
     GETANSWERSVOLUME :'answers/getAnswersVolume',
-    GETLATESTUSERRESPONSE: "answers/getLatestUserResponse"
+    GETLATESTUSERRESPONSE: "answers/getLatestUserResponse",
+    GETMOSTANSWEREDQUESTION: 'questions/getMostAnsweredQuestion',
+    GETNUMBEROFANSWERS: 'forms/getNumberOfAnswersByForm'
 };

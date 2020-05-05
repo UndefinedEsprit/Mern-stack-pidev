@@ -182,3 +182,27 @@ export async function GetLatestUserResponse() {
   });
   return res;
 }
+
+/**
+ * Fetch most answered question form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetMostAnsweredQuestion() {
+  let res;
+  await axios.get(apiUrl + "/userResponse/getMostAnsweredQuestion").then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+
+/**
+ * Fetch number of answers by form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetNumberOfAnswersByForm(formId) {
+  let res;
+  await axios.get(apiUrl + "/form/getNumberOfAnswersByForm/"+ formId).then((response) => {
+    res = response.data;
+  });
+  return res;
+}

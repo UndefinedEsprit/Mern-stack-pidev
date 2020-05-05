@@ -4,6 +4,7 @@ const User = require("../models/user");
 const Question = require("../models/question");
 const Form =require("../models/form");
 const Study =require("../models/study");
+const ObjectId = mongoose.Types.ObjectId;
 
 class UserResponseService {}
 
@@ -31,11 +32,11 @@ UserResponseService.prototype.delete = async (req, res) => {
   res.json(userResponse);
 };
 
-UserResponseService.prototype.getByQuestion = async (req, res) => {
+UserResponseService.prototype.getByQuestion = async (id) => {
   const userResponses = await UserResponse.find({
-    question: { _id: req.params.id},
+    question: { _id:id},
   });
-  res.json(userResponses);
+  return userResponses;
 };
 
 UserResponseService.prototype.getAnswersVolume = async (req, res) => {
@@ -74,4 +75,29 @@ UserResponseService.prototype.getLatestUserResponse = async (req, res) => {
   let study = await Study.findById(form.study); 
   res.json({"text":userResponse.text,"userEmail":user.email,"questionText":question.text,"formTitle":form.title,"studyName":study.name});
 }
+
+UserResponseService.prototype.getMostAnsweredQuestion = async (req,res) => {
+  const responsesFilter = await UserResponse.aggregate([  
+        {$group: {_id: "$question", count: { "$sum": 1}}},
+        {$sort: {count: -1}},
+        {$limit: 1} 
+  ]);
+  let question = await Question.findById(responsesFilter[0]._id); 
+  let form = await Form.findById(question.form); 
+  let study = await Study.findById(form.study); 
+  res.json({"questionText":question.text,"formTitle":form.title,"studyName":study.name,"count":responsesFilter[0].count});
+}
+
+UserResponseService.prototype.getNumberOfAnswersByQuestion = async (questionId) => {
+  const responsesFilter = await UserResponse.aggregate([ 
+        {"$match":{"question": ObjectId(questionId)}}, 
+        {$group: {_id: "$question", count: { "$sum": 1}}}
+  ]);
+  if(!responsesFilter[0]){
+    return({"_id":questionId,"count":0})
+  }
+  return responsesFilter[0];
+}
+
+
 module.exports = UserResponseService;

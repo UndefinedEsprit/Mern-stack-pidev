@@ -25,8 +25,9 @@ import MostActiveUsers from "./components/mostActiveUsers";
 import {getMostActiveUsers} from "../../redux/models/user/actions/users";
 import {getQuestionsTypes} from "../../redux/models/question/actions/questions";
 import {getLatestForm,getLatestPublishedForm} from "../../redux/models/form/actions/forms";
-import {getLatestUserResponse} from "../../redux/models/response/actions/responses";
+import {getLatestUserResponse,getMostAnsweredQuestion,getNumberOfAnswersByForm} from "../../redux/models/response/actions/responses";
 import QuestionsList from "./components/questionsList";
+import QuestionsAnswsersStat from './components/stats/questionsAnswersStat'; 
 
   
 function QuestionsPage(props){  
@@ -45,6 +46,8 @@ function QuestionsPage(props){
             await props.actions.getLatestStudy();
             await props.actions.getLatestUserResponse();
             await props.actions.getLatestPublishedForm(); 
+            await props.actions.getMostAnsweredQuestion();
+            await props.actions.getNumberOfAnswersByForm(id);
             setIsLoading(false);
             } catch(e) {
             console.log(e);
@@ -68,6 +71,7 @@ function QuestionsPage(props){
         >
         <Brief
           mostPublishedStudy={props.mostPublishedStudy}
+          mostAnsweredQuestion= {props.mostAnsweredQuestion}
         />
         <Row>
         <Col md="6" sm="12" xs="12">
@@ -98,6 +102,12 @@ function QuestionsPage(props){
           />
         </Col>
       </Row>
+      <Row>
+        <Col lg="8" md="12" sm="12" xs="12">
+            <QuestionsAnswsersStat
+             numberOfAnswers ={props. numberOfAnswers } />      
+        </Col>
+      </Row>
     </Page>
         )}
       </div>
@@ -115,7 +125,9 @@ QuestionsPage.propTypes = {
         getLatestForm: PropTypes.func,
         getLatestPublishedForm: PropTypes.func,
         getLatestUserResponse: PropTypes.func,
-        getLatestStudy: PropTypes.func
+        getLatestStudy: PropTypes.func,
+        getMostAnsweredQuestion: PropTypes.func,
+        getNumberOfAnswersByForm: PropTypes.func,
     })
 };
 export const mapStateToProps = state => {
@@ -127,8 +139,10 @@ export const mapStateToProps = state => {
     const latestForm= state.latestForm;
     const latestPublishedForm= state.latestPublishedForm;
     const latestUserResponse= state.latestUserResponse;
+    const mostAnsweredQuestion = state.mostAnsweredQuestion;
+    const numberOfAnswers= Object.values(state.numberOfAnswers);
     return { questions ,mostPublishedStudy,questionsTypes,mostActiveUsers,latestUserResponse,
-        latestForm,latestPublishedForm,latestStudy}; 
+        latestForm,latestPublishedForm,latestStudy,mostAnsweredQuestion,numberOfAnswers}; 
 };
     
 export const mapDispatchToProps = dispatch => {
@@ -143,7 +157,9 @@ export const mapDispatchToProps = dispatch => {
             getLatestStudy,
             getLatestUserResponse,
             getLatestPublishedForm,
-            getLatestForm
+            getLatestForm,
+            getMostAnsweredQuestion,
+            getNumberOfAnswersByForm
             },
         dispatch
         )

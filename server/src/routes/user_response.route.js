@@ -7,6 +7,7 @@ const service = new UserResponseService();
 router.post('/',service.add);
 router.get('/',service.getAll);
 router.get("/getLatestUserResponse", service.getLatestUserResponse);
+router.get("/getMostAnsweredQuestion", service.getMostAnsweredQuestion);
 router.get('/getanswersvolume/:id',service.getAnswersVolume);
 router.get('/:id',service.getById);
 
