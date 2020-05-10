@@ -22,7 +22,7 @@ const FormsStatusStat = (props) => {
   return (
       <div>
           <Card>
-            <CardHeader>forms stauts</CardHeader>
+            <CardHeader>forms status</CardHeader>
             <CardBody>
               <DisplayStat
                 formsStatus={props.formsStatus}

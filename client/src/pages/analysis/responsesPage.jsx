@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createError } from '../../redux/actions/error';
 import {getQuestionById } from '../../redux/models/question/actions/questions';
-import {getAnswersVolume } from '../../redux/models/response/actions/responses';
+import {getAnswersVolume,filterAnswersVolume } from '../../redux/models/response/actions/responses';
 import {reset} from "../../redux/actions/reset";
 import Loading from './components/loading'; 
 import ResponsesList from "./components/responsesList";
@@ -13,6 +13,11 @@ import Page from './components/Page';
 import {
     Col,
     Row,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText,
+    Input,
+    Button,
 } from 'reactstrap'; 
 import {
     getMostPublishedStudy,
@@ -29,38 +34,55 @@ import {getLatestUserResponse,getMostAnsweredQuestion} from "../../redux/models/
 import AnswersVolumeStat from"./components/stats/answersVolumeStat";
     
 function ResponsesPage(props){  
-    const [isLoading, setIsLoading] = useState(true);
-    const {id} = useParams();
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            setIsLoading(false);
-            await props.actions.reset();
-            await props.actions.getQuestionById(id);
-            await props.actions.getAnswersVolume(id);
-            await props.actions.getMostPublishedStudy();
-            await props.actions.getQuestionsTypes();
-            await props.actions.getMostActiveUsers();
-            await props.actions.getLatestForm();
-            await props.actions.getLatestStudy();
-            await props.actions.getLatestUserResponse();
-            await props.actions.getLatestPublishedForm();
-            await props.actions.getMostAnsweredQuestion() 
-            setIsLoading(false);
-          } catch (e) {
-            console.log(e);
-            throw e; // let caller know the promise was rejected with this reason
-          }
-        };
-        fetchData();
-      }, []);
-    return(
-<div>
-        {isLoading ? (
-          <div>
-            <Loading />
-          </div>
-        ) : (
+  const [isLoading, setIsLoading] = useState(true);
+  const [criteria, setCriteria] = useState([]);
+  const [ageCriterion, setAgeCriterion] = useState({});
+  const [submitFilter, setSubmitFilter] = useState(false);
+  const {id} = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(false);
+        await props.actions.reset();
+        await props.actions.getQuestionById(id);
+        await props.actions.getMostPublishedStudy();
+        await props.actions.getQuestionsTypes();
+        await props.actions.getMostActiveUsers();
+        await props.actions.getLatestForm();
+        await props.actions.getLatestStudy();
+        await props.actions.getLatestUserResponse();
+        await props.actions.getLatestPublishedForm();
+        await props.actions.getMostAnsweredQuestion();
+        if(submitFilter==false){
+          await props.actions.getAnswersVolume(id);
+        }
+        else {
+          await props.actions.filterAnswersVolume(id,criteria);
+        } 
+        setIsLoading(false);
+      } catch (e) {
+        console.log(e);
+        throw e; // let caller know the promise was rejected with this reason
+      }
+    };
+    fetchData();
+  },[]);
+  const submitCriteria = (value) => {
+    //setCriteria(criteria => [...criteria, newCriterion])
+    setSubmitFilter(true);
+
+  };
+  const addCriterion=(field,value)=>{
+    setAgeCriterion({"field":field,"value":value})  
+    console.log(ageCriterion);
+  }
+  return(
+    <div>
+      {isLoading ? (
+        <div>
+          <Loading />
+        </div>
+      ) : (
         <Page
           className="QuestionDetailsPage"
           title="QuestionDetailsPage"
@@ -90,6 +112,23 @@ function ResponsesPage(props){
             <AnswersVolumeStat
             answersVolume ={props.answersVolume }
             isAnswered= {props.isAnswered}/>
+            you want to filter the answers by users criteria ? just type in the criterion and check it 
+            <InputGroup>
+              <InputGroupAddon addonType="prepend">
+                  <Input addon min={0} type="number" step="1" placeholder="type in the age of users you want to consider"  style={{ margin: "auto", width: 500 }} onChange={(e) => addCriterion("age",`${e.target.value}`)} />
+              </InputGroupAddon>
+            </InputGroup>
+            <br/>
+            <InputGroup>
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <Input addon type="checkbox" aria-label="Checkbox for following text input" />
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input placeholder="type in the address of users you want to consider" />
+            </InputGroup>
+            <br/>
+            <Button color="info">filter</Button>
         </Col>
         <Col lg="4" md="12" sm="12" xs="12">
         <Latest

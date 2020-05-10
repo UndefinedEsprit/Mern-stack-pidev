@@ -4,6 +4,7 @@ const User = require("../models/user");
 const Question = require("../models/question");
 const Form =require("../models/form");
 const Study =require("../models/study");
+const QueryBuilderService=require("./queryBuilder.service");
 const ObjectId = mongoose.Types.ObjectId;
 
 class UserResponseService {}
@@ -40,22 +41,12 @@ UserResponseService.prototype.getByQuestion = async (id) => {
 };
 
 UserResponseService.prototype.getAnswersVolume = async (req, res) => {
-  const userResponses = await UserResponse.find({
-    question: { _id: req.params.id},
-  });
-  let answersVolumeMap = [];
-  let answers=[];
-  userResponses.map((element) => {
-    if (answers.includes(element.text)) {
-      answersVolumeMap.map((e) => {
-        if (e.answer == element.text) e.volume++;
-      });
-    } else {
-      answers.push(element.text);
-      answersVolumeMap.push({ answer: element.text, volume: 1});
-    }
-  });
-  res.json(answersVolumeMap);
+  let questionId = req.params.id;
+  const responsesFilter = await UserResponse.aggregate([ 
+    {"$match":{"question": ObjectId(questionId)}}, 
+    {$group: {_id: "$text", count: { "$sum": 1}}}
+  ]);
+  res.json(responsesFilter);
 };
 
 UserResponseService.prototype.getMostActiveUsersIds = async () => {
@@ -65,6 +56,24 @@ UserResponseService.prototype.getMostActiveUsersIds = async () => {
         {$limit: 5} 
   ]);
   return filter;
+};
+
+UserResponseService.prototype.filterAnswersVolumeByUserCriteria = async (req, res) => {
+  var {query}=QueryBuilderService.prototype.buildCriteriaQuery(req);
+  let users=await User.find(query,'_id');
+  let usersId=[];
+  users.map((user)=>{
+    usersId.push(user._id);
+  })
+  let questionId = req.body.questionId;
+  const responsesFilter = await UserResponse.aggregate([ 
+    {"$match":{$and:[ 
+      {"question": ObjectId(questionId)},
+      {"user":{$in:usersId}}
+    ]}}, 
+    {$group: {_id: "$text", count: { "$sum": 1}}}
+  ]);
+  res.json(responsesFilter);
 };
 
 UserResponseService.prototype.getLatestUserResponse = async (req, res) => {
@@ -98,6 +107,5 @@ UserResponseService.prototype.getNumberOfAnswersByQuestion = async (questionId) 
   }
   return responsesFilter[0];
 }
-
 
 module.exports = UserResponseService;

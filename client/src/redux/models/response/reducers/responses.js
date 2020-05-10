@@ -8,8 +8,8 @@ export function answersVolume(state = initialState.answersVolume, action) {
             const { answersVolume} = action; 
             let nextState = Object.assign({}, state);
             for (let element of answersVolume) {
-                if (!nextState[element.answer]) {
-                    nextState[element.answer] = element;
+                if (!nextState[element._id]) {
+                    nextState[element._id] = element;
                 }
             }
             return nextState;

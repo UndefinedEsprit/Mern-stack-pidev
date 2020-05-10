@@ -99,6 +99,21 @@ export async function GetAnswersVolume(questionId) {
   });
   return res;
 }
+/**
+ * Fetch answers volume by user criteria and by question from the API
+ * @return {Response}          Fetch API Response
+ */
+export async function FilterAnswersVolumeByUserCriteria(questionId,criteria) {
+  let res;
+  await axios.post(apiUrl + "/userresponse/filteranswersvolumebyusercriteria",
+  {
+    "criteria":	criteria,
+    "questionId":questionId
+  }).then((response) => {
+    res = response.data;
+  });
+  return res;
+}
 
 /**
  * Fetch Most Published Study form the API
@@ -129,7 +144,7 @@ export async function GetQuestionsTypes() {
  */
 export async function GetMostActiveUsers() {
   let res;
-  await axios.get(apiUrl + "/user/getStudyWithMostPublishedForms").then((response) => {
+  await axios.get(apiUrl + "/user/getmostactiveusers").then((response) => {
     res = response.data;
   });
   return res;
@@ -206,3 +221,6 @@ export async function GetNumberOfAnswersByForm(formId) {
   });
   return res;
 }
+
+
+

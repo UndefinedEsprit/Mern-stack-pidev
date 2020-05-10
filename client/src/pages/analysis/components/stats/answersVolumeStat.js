@@ -29,9 +29,8 @@ const DisplayStat = (props) => {
   let x, y;
   {
     answersVolume.map((element) => {
-      console.log("element");
-          x = element.answer;
-          y = element.volume;
+          x = element._id;
+          y = element.count;
           data.push({ x, y });
     });
   }
@@ -42,7 +41,6 @@ const DisplayStat = (props) => {
         <VerticalBarSeries data={data} color={"#33ccff"}/>
         <XAxis />
         <YAxis
-          title="chosen times"
           style={{
             line: { stroke: "#ADDDE1" },
             text: { stroke: "none", fill: "#6b6b76", fontWeight: 600 },
@@ -60,32 +58,35 @@ const answersVolumeStat = (props) => {
             <CardHeader>chosen answers</CardHeader>
             <CardBody>
             {props.isAnswered ? (
+              <div>
                <DisplayStat
                answersVolume={props.answersVolume}
                />
+               <ListGroup flush>
+               <ListGroupItem>
+                 <MdInsertChart size={25} color={primaryColor} /> total number of studies{' '}
+                 <Badge color="secondary">3</Badge>
+               </ListGroupItem>
+               <ListGroupItem>
+                 <MdBubbleChart size={25} color={primaryColor} /> total number of forms
+                 costs <Badge color="secondary">4</Badge>
+               </ListGroupItem>
+               <ListGroupItem>
+                 <MdShowChart size={25} color={primaryColor} /> Financial costs{' '}
+                 <Badge color="secondary">2</Badge>
+               </ListGroupItem>
+               <ListGroupItem>
+                 <MdPieChart size={25} color={primaryColor} /> Other operating
+                 costs <Badge color="secondary">0</Badge>
+               </ListGroupItem>
+             </ListGroup>
+             </div>
             ) : (            
              <div>no responses found for this question</div>
             )}
 
               </CardBody>
-                <ListGroup flush>
-                  <ListGroupItem>
-                    <MdInsertChart size={25} color={primaryColor} /> total number of studies{' '}
-                    <Badge color="secondary">3</Badge>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    <MdBubbleChart size={25} color={primaryColor} /> total number of forms
-                    costs <Badge color="secondary">4</Badge>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    <MdShowChart size={25} color={primaryColor} /> Financial costs{' '}
-                    <Badge color="secondary">2</Badge>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    <MdPieChart size={25} color={primaryColor} /> Other operating
-                    costs <Badge color="secondary">0</Badge>
-                  </ListGroupItem>
-                </ListGroup>
+               
           </Card>
       </div>
     ) 

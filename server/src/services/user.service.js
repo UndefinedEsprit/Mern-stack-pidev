@@ -1,7 +1,8 @@
 const User = require("../models/user");
 const mongoose = require("mongoose");
 const UserResponseService = require("./user_response.service");
-class UserService {}
+
+class UserService{}
 
 UserService.prototype.getAll = async (req, res) => {
   const users = await User.find();
@@ -14,17 +15,9 @@ UserService.prototype.getById = async (req, res) => {
   res.json(user);
 };
 
-UserService.prototype.getByCriteria = async (req, res) => {
-  let criteria = req.body;
+UserService.prototype.filterByCriteria = async (req, res) => {
   var users = Array;
-  var query = {};
-  for (var key in criteria) {
-    if (criteria.hasOwnProperty(key)) {
-      var field = criteria[key].field;
-      var value = criteria[key].value;
-      query[field] = value;
-    }
-  }
+  var {query } = UserService.prototype.buildCriteriaQuery(req);
   users = await User.find(query);
   res.json(users);
 };
@@ -56,4 +49,6 @@ UserService.prototype.getMostActiveUsers = async (req, res) => {
   res.json(activeUsers);
 }
 
+
 module.exports = UserService;
+

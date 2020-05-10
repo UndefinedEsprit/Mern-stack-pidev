@@ -25,8 +25,8 @@ import {getMostActiveUsers} from "../../redux/models/user/actions/users";
 import {getQuestionsTypes} from "../../redux/models/question/actions/questions";
 import {getLatestForm,getLatestPublishedForm} from "../../redux/models/form/actions/forms";
 import {getLatestUserResponse,getMostAnsweredQuestion} from "../../redux/models/response/actions/responses";
-
 import Loading from "./components/loading";
+
 function AnalysisHome(props) {
   const [isLoading, setIsLoading] = useState(false);
 
