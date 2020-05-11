@@ -18,6 +18,8 @@ import {
     InputGroupText,
     Input,
     Button,
+    CardBody,
+    Card
 } from 'reactstrap'; 
 import {
     getMostPublishedStudy,
@@ -37,12 +39,32 @@ function ResponsesPage(props){
   const [isLoading, setIsLoading] = useState(true);
   const [criteria, setCriteria] = useState([]);
   const [ageCriterion, setAgeCriterion] = useState({});
+  const [addressCriterion, setAddressCriterion] = useState({});
   const [submitFilter, setSubmitFilter] = useState(false);
+  const [agePlaceholder,setAgePlaceholder] = useState("type in the age of users you want to consider");
+  const [addressPlaceholder,setAddressPlaceholder] = useState("type in the address of users you want to consider");
   const {id} = useParams();
+  const submitCriteria = () => {
+    setCriteria(criteria => [...criteria,ageCriterion,addressCriterion])
+    setSubmitFilter(!submitFilter); 
+  };
+  const addAgeCriterion=(value)=>{
+    if(value==""){
+      setAgeCriterion({});
+    }else{
+      setAgeCriterion({"field":"age","value":value})
+    }
+  }
+  const addAddressCriterion=(value)=>{
+    if(value==""){
+      setAddressCriterion({});
+    }else{
+      setAddressCriterion({"field":"address","value":value})
+    }
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(false);
         await props.actions.reset();
         await props.actions.getQuestionById(id);
         await props.actions.getMostPublishedStudy();
@@ -52,13 +74,9 @@ function ResponsesPage(props){
         await props.actions.getLatestStudy();
         await props.actions.getLatestUserResponse();
         await props.actions.getLatestPublishedForm();
-        await props.actions.getMostAnsweredQuestion();
-        if(submitFilter==false){
-          await props.actions.getAnswersVolume(id);
-        }
-        else {
-          await props.actions.filterAnswersVolume(id,criteria);
-        } 
+        await props.actions.getMostAnsweredQuestion();;
+        await props.actions.filterAnswersVolume(id,criteria);
+        setCriteria([])
         setIsLoading(false);
       } catch (e) {
         console.log(e);
@@ -66,16 +84,7 @@ function ResponsesPage(props){
       }
     };
     fetchData();
-  },[]);
-  const submitCriteria = (value) => {
-    //setCriteria(criteria => [...criteria, newCriterion])
-    setSubmitFilter(true);
-
-  };
-  const addCriterion=(field,value)=>{
-    setAgeCriterion({"field":field,"value":value})  
-    console.log(ageCriterion);
-  }
+  },[submitFilter]);
   return(
     <div>
       {isLoading ? (
@@ -109,26 +118,29 @@ function ResponsesPage(props){
       />
       <Row>
         <Col lg="8" md="12" sm="12" xs="12">
+        <Card>
+        <CardBody>
             <AnswersVolumeStat
             answersVolume ={props.answersVolume }
             isAnswered= {props.isAnswered}/>
             you want to filter the answers by users criteria ? just type in the criterion and check it 
             <InputGroup>
               <InputGroupAddon addonType="prepend">
-                  <Input addon min={0} type="number" step="1" placeholder="type in the age of users you want to consider"  style={{ margin: "auto", width: 500 }} onChange={(e) => addCriterion("age",`${e.target.value}`)} />
+                  <Input addon min={0} type="number" step="1" placeholder={agePlaceholder}  style={{ margin: "auto", width: 500 }} onChange={(e) => addAgeCriterion(`${e.target.value}`)} />
               </InputGroupAddon>
             </InputGroup>
             <br/>
             <InputGroup>
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>
-                  <Input addon type="checkbox" aria-label="Checkbox for following text input" />
+                  <Input addon type="text" placeholder={addressPlaceholder}  style={{ margin: "auto", width: 500 }} onChange={(e) => addAddressCriterion(`${e.target.value}`)} />
                 </InputGroupText>
               </InputGroupAddon>
-              <Input placeholder="type in the address of users you want to consider" />
             </InputGroup>
             <br/>
-            <Button color="info">filter</Button>
+            <Button color="info"onClick={() =>submitCriteria() } >filter</Button>
+            </CardBody>
+            </Card>
         </Col>
         <Col lg="4" md="12" sm="12" xs="12">
         <Latest
@@ -158,6 +170,7 @@ ResponsesPage.propTypes = {
         getLatestUserResponse: PropTypes.func,
         getLatestStudy: PropTypes.func,
         getMostAnsweredQuestion: PropTypes.func,
+        filterAnswersVolume: PropTypes.func,
     })
 };
 export const mapStateToProps = (state,props) => {
@@ -193,7 +206,8 @@ export const mapDispatchToProps = dispatch => {
             getLatestUserResponse,
             getLatestPublishedForm,
             getLatestForm,
-            getMostAnsweredQuestion
+            getMostAnsweredQuestion,
+            filterAnswersVolume
             },
         dispatch
         )
