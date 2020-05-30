@@ -222,5 +222,17 @@ export async function GetNumberOfAnswersByForm(formId) {
   return res;
 }
 
+/**
+ * Fetch most chosen answer form the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetMostChosenAnswer() {
+  let res;
+  await axios.get(apiUrl + "/userResponse/getMostChosenAnswer").then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+
 
 

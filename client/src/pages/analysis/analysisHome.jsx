@@ -24,7 +24,7 @@ import StudiesList from "./components/studiesList";
 import {getMostActiveUsers} from "../../redux/models/user/actions/users";
 import {getQuestionsTypes} from "../../redux/models/question/actions/questions";
 import {getLatestForm,getLatestPublishedForm} from "../../redux/models/form/actions/forms";
-import {getLatestUserResponse,getMostAnsweredQuestion} from "../../redux/models/response/actions/responses";
+import {getLatestUserResponse,getMostAnsweredQuestion,getMostChosenAnswer} from "../../redux/models/response/actions/responses";
 import Loading from "./components/loading";
 
 function AnalysisHome(props) {
@@ -44,7 +44,8 @@ function AnalysisHome(props) {
         await props.actions.getLatestStudy();
         await props.actions.getLatestUserResponse();
         await props.actions.getLatestPublishedForm(); 
-        await props.actions.getMostAnsweredQuestion();      
+        await props.actions.getMostAnsweredQuestion();   
+        await props.actions.getMostChosenAnswer();   
         setIsLoading(false);
       } catch (e) {
         console.log(e);
@@ -69,6 +70,7 @@ function AnalysisHome(props) {
       <Brief
       mostPublishedStudy={props.mostPublishedStudy}
       mostAnsweredQuestion= {props.mostAnsweredQuestion}
+      mostChosenAnswer={props.mostChosenAnswer}
       />
       <Row>
       <Col md="6" sm="12" xs="12">
@@ -128,6 +130,7 @@ AnalysisHome.propTypes = {
     getLatestUserResponse: PropTypes.func,
     getLatestStudy: PropTypes.func,
     getMostAnsweredQuestion: PropTypes.func,
+    getMostChosenAnswer: PropTypes.func,
   }),
 };
 export const mapStateToProps = (state) => {
@@ -145,8 +148,9 @@ export const mapStateToProps = (state) => {
   const latestPublishedForm= state.latestPublishedForm;
   const latestUserResponse= state.latestUserResponse;
   const mostAnsweredQuestion = state.mostAnsweredQuestion;
+  const mostChosenAnswer= state.mostChosenAnswer;
   return { studies, countForms,mostPublishedStudy,questionsTypes,mostActiveUsers,latestUserResponse,
-    latestForm,latestPublishedForm,latestStudy,mostAnsweredQuestion};
+    latestForm,latestPublishedForm,latestStudy,mostAnsweredQuestion,mostChosenAnswer};
 };
 
 export const mapDispatchToProps = (dispatch) => {
@@ -163,7 +167,8 @@ export const mapDispatchToProps = (dispatch) => {
         getLatestUserResponse,
         getLatestPublishedForm,
         getLatestForm,
-        getMostAnsweredQuestion
+        getMostAnsweredQuestion,
+        getMostChosenAnswer
       },
       dispatch
     ),

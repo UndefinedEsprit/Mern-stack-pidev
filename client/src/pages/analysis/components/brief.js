@@ -10,7 +10,7 @@ import {
     PopoverBody,
   } from 'reactstrap';
 const Brief = (props) => {
-  const { mostPublishedStudy ,mostAnsweredQuestion} = props;
+  const { mostPublishedStudy ,mostAnsweredQuestion,mostChosenAnswer} = props;
   const [isOpenFirst, setIsOpenFirst] = useState(false);
   const toggleFirst = () => {
        setIsOpenFirst(!isOpenFirst)
@@ -92,7 +92,7 @@ const Brief = (props) => {
                 backgroundColor:"#f0f2f0", 
 
               }}>
-                <h7> {mostAnsweredQuestion.questionText}</h7>
+                <h7> '{mostAnsweredQuestion.questionText}'</h7>
                 <h7> asked in the form </h7>
                 <h7> '{mostAnsweredQuestion.formTitle}' </h7>
                 <h7> in the study  '{mostAnsweredQuestion.studyName}' </h7>
@@ -107,9 +107,9 @@ const Brief = (props) => {
          < BsFillCaretDownFill size={20} color={"back"} />
         <NumberWidget
         onClick={toggleThird }
-        title="most answered question"
-          subtitle="This question"
-          number="9 answers"
+        title="most chosen answer"
+          subtitle={mostChosenAnswer.text}
+          number={mostChosenAnswer.count}
           
         /> 
          
@@ -127,9 +127,11 @@ const Brief = (props) => {
                 backgroundColor:"#f0f2f0",
                 borderWidth:"thin", 
               }}>
-                <h6>question type multilpe3</h6>
-             <br></br>
-             <h6>belonging to this form3</h6>
+                <h7>responding to the question </h7>
+              <h7> {mostChosenAnswer.questionText}</h7>
+                <h7> asked in the form </h7>
+                <h7> '{mostChosenAnswer.formTitle}' </h7>
+                <h7> in the study  '{mostChosenAnswer.studyName}' </h7>
             
                 </PopoverBody>
                 </Popover>
@@ -176,6 +178,7 @@ const Brief = (props) => {
 Brief.propTypes = {
   mostPublishedStudy: PropTypes.object.isRequired,
   mostAnsweredQuestion: PropTypes.object.isRequired,
+  mostChosenAnswer: PropTypes.object.isRequired,
 };
 
 export default Brief;

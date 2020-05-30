@@ -34,7 +34,7 @@ import FormsList from "./components/formsList";
 import {getMostActiveUsers} from "../../redux/models/user/actions/users";
 import {getQuestionsTypes} from "../../redux/models/question/actions/questions";
 import {getLatestForm,getLatestPublishedForm} from "../../redux/models/form/actions/forms";
-import {getLatestUserResponse,getMostAnsweredQuestion} from "../../redux/models/response/actions/responses";
+import {getLatestUserResponse,getMostAnsweredQuestion,getMostChosenAnswer} from "../../redux/models/response/actions/responses";
 
 function FormsPage(props) {
   const { id } = useParams();
@@ -55,6 +55,7 @@ function FormsPage(props) {
         await props.actions.getLatestUserResponse();
         await props.actions.getLatestPublishedForm();
         await props.actions.getMostAnsweredQuestion();
+        await props.actions.getMostChosenAnswer();
         
         setIsLoading(false);
       } catch (e) {
@@ -80,6 +81,7 @@ function FormsPage(props) {
       <Brief
         mostPublishedStudy={props.mostPublishedStudy}
         mostAnsweredQuestion= {props.mostAnsweredQuestion}
+        mostChosenAnswer={props.mostChosenAnswer}
       />
       <Row>
       <Col md="6" sm="12" xs="12">
@@ -137,6 +139,7 @@ FormsPage.propTypes = {
     getLatestUserResponse: PropTypes.func,
     getLatestStudy: PropTypes.func,
     getMostAnsweredQuestion: PropTypes.func,
+    getMostChosenAnswer: PropTypes.func,
     
   }),
 };
@@ -156,8 +159,9 @@ export const mapStateToProps = (state) => {
   const latestPublishedForm= state.latestPublishedForm;
   const latestUserResponse= state.latestUserResponse;
   const mostAnsweredQuestion = state.mostAnsweredQuestion;
+  const mostChosenAnswer= state.mostChosenAnswer;
   return { forms, countQuestions, formsStatus,mostPublishedStudy,questionsTypes,mostActiveUsers,latestUserResponse,
-    latestForm,latestPublishedForm,latestStudy,mostAnsweredQuestion};
+    latestForm,latestPublishedForm,latestStudy,mostAnsweredQuestion,mostChosenAnswer};
 };
 
 export const mapDispatchToProps = (dispatch) => {
@@ -177,7 +181,7 @@ export const mapDispatchToProps = (dispatch) => {
         getLatestPublishedForm,
         getLatestForm,
         getMostAnsweredQuestion,
-        
+        getMostChosenAnswer
       },
       dispatch
     ),

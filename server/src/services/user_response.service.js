@@ -107,5 +107,15 @@ UserResponseService.prototype.getNumberOfAnswersByQuestion = async (questionId) 
   }
   return responsesFilter[0];
 }
-
+UserResponseService.prototype.getMostChosenAnswer = async (req,res) => {
+  const responsesFilter = await UserResponse.aggregate([  
+        {$group: {_id: {text:"$text",question:"$question"}, count: { "$sum": 1}}},
+        {$sort: {count: -1}},
+        {$limit: 1} 
+  ]);
+  let question = await Question.findById(responsesFilter[0]._id.question); 
+  let form = await Form.findById(question.form); 
+  let study = await Study.findById(form.study); 
+  res.json({"text":responsesFilter[0]._id.text,"questionText":question.text,"formTitle":form.title,"studyName":study.name,"count":responsesFilter[0].count});
+}
 module.exports = UserResponseService;

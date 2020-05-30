@@ -38,6 +38,7 @@ export const answers = {
     GET: 'answers/get',
     GETANSWERSVOLUME :'answers/getAnswersVolume',
     GETLATESTUSERRESPONSE: "answers/getLatestUserResponse",
+    GETMOSTCHOSENANSWER : "answers/getMostChosenAnswer",
     GETMOSTANSWEREDQUESTION: 'questions/getMostAnsweredQuestion',
     GETNUMBEROFANSWERS: 'forms/getNumberOfAnswersByForm'
 };

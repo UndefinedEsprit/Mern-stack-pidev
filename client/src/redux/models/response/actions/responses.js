@@ -1,5 +1,5 @@
 import * as types from '../../../constants/types';
-import {GetAnswersVolume,GetLatestUserResponse,GetMostAnsweredQuestion,GetNumberOfAnswersByForm,FilterAnswersVolumeByUserCriteria} from '../../../api/http';
+import {GetAnswersVolume,GetLatestUserResponse,GetMostAnsweredQuestion,GetNumberOfAnswersByForm,FilterAnswersVolumeByUserCriteria,GetMostChosenAnswer} from '../../../api/http';
 
 
 
@@ -65,5 +65,19 @@ export function updateNumberOfAnswers(numberOfAnswers) {
     return {
         type: types.answers.GETNUMBEROFANSWERS,
         numberOfAnswers
+    };
+}
+
+export function getMostChosenAnswer(){ 
+    let mostChosenAnswer={};
+    return async (dispatch) => { 
+        mostChosenAnswer=  await GetMostChosenAnswer();
+        dispatch (updateMostChosenAnswer(mostChosenAnswer)); 
+    }  
+}
+export function updateMostChosenAnswer(mostChosenAnswer) {
+    return {
+        type: types.answers.GETMOSTCHOSENANSWER,
+        mostChosenAnswer
     };
 }

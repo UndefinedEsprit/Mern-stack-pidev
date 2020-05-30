@@ -65,4 +65,18 @@ export function numberOfAnswers(state = initialState.numberOfAnswers, action) {
   }
 }
 
+export function mostChosenAnswer(state = initialState.mostChosenAnswer, action) {
+  switch (action.type) {
+    case types.answers.GETMOSTCHOSENANSWER: {
+      const {mostChosenAnswer}= action;
+      let nextState = Object.assign({}, state);
+        nextState=mostChosenAnswer;
+      return nextState;
+    }
+
+    default:
+      return state;
+  }
+}
+
 

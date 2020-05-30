@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createError } from '../../redux/actions/error';
 import {getQuestionById } from '../../redux/models/question/actions/questions';
-import {getAnswersVolume,filterAnswersVolume } from '../../redux/models/response/actions/responses';
+import {getAnswersVolume,filterAnswersVolume,getMostChosenAnswer } from '../../redux/models/response/actions/responses';
 import {reset} from "../../redux/actions/reset";
 import Loading from './components/loading'; 
 import ResponsesList from "./components/responsesList";
@@ -76,6 +76,7 @@ function ResponsesPage(props){
         await props.actions.getLatestPublishedForm();
         await props.actions.getMostAnsweredQuestion();;
         await props.actions.filterAnswersVolume(id,criteria);
+        await props.actions.getMostChosenAnswer();
         setCriteria([])
         setIsLoading(false);
       } catch (e) {
@@ -100,6 +101,7 @@ function ResponsesPage(props){
         <Brief
           mostPublishedStudy={props.mostPublishedStudy}
           mostAnsweredQuestion= {props.mostAnsweredQuestion}
+          mostChosenAnswer={props.mostChosenAnswer}
         />
         <Row>
         <Col md="6" sm="12" xs="12">
@@ -171,6 +173,7 @@ ResponsesPage.propTypes = {
         getLatestStudy: PropTypes.func,
         getMostAnsweredQuestion: PropTypes.func,
         filterAnswersVolume: PropTypes.func,
+        getMostChosenAnswer: PropTypes.func,
     })
 };
 export const mapStateToProps = (state,props) => {
@@ -185,10 +188,11 @@ export const mapStateToProps = (state,props) => {
     const latestPublishedForm= state.latestPublishedForm;
     const latestUserResponse= state.latestUserResponse;
     const mostAnsweredQuestion = state.mostAnsweredQuestion;
+    const mostChosenAnswer= state.mostChosenAnswer;
     if(Object.entries(state.answersVolume).length === 0)
         isAnswered=false;
     return { question,answersVolume,isAnswered,mostPublishedStudy,questionsTypes,mostActiveUsers,latestUserResponse,
-        latestForm,latestPublishedForm,latestStudy,mostAnsweredQuestion}; 
+        latestForm,latestPublishedForm,latestStudy,mostAnsweredQuestion,mostChosenAnswer}; 
  
 };
     
@@ -207,7 +211,8 @@ export const mapDispatchToProps = dispatch => {
             getLatestPublishedForm,
             getLatestForm,
             getMostAnsweredQuestion,
-            filterAnswersVolume
+            filterAnswersVolume,
+            getMostChosenAnswer
             },
         dispatch
         )

@@ -1,3 +1,5 @@
+import { GetMostChosenAnswer } from "../api/http";
+
 /**
  * Initial state for the redux store
  * @type {Object}
@@ -23,6 +25,7 @@ export default {
     latestPublishedForm: {},
     latestUserResponse: {},
     mostAnsweredQuestion: {},
-    numberOfAnswers: {}
+    numberOfAnswers: {},
+    mostChosenAnswer: {}
 
 };
