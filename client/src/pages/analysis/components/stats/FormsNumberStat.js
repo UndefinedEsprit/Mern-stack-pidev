@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { getColor } from '../../utils/colors';
 import {
   XYPlot,
@@ -53,8 +53,17 @@ const DisplayStat = (props) => {
 DisplayStat.propTypes = {
   countForms: PropTypes.object.isRequired,
 };
-const FormsNumberStat= (props) => {
-  const primaryColor = getColor('primary');
+const FormsNumberStat=(props) => {
+    const [formsNumber, setFormsNumber] = useState();
+    const [maxStudy, setMaxStudy] = useState();
+    const [minStudy, setMinStudy] = useState();
+    const [primaryColor, setPrimaryColor] = useState();
+    useEffect(() => {
+      setFormsNumber(calculateFormsTotalNumber(props.countForms ));
+      setMaxStudy(getStudyWithMaximumForms(props.countForms));
+      setMinStudy(getStudyWithMinimumForms(props.countForms));
+      setPrimaryColor(getColor('primary'));
+    },[]);
   return (
       <div>
           <Card>
@@ -67,19 +76,19 @@ const FormsNumberStat= (props) => {
 <ListGroup flush>
   <ListGroupItem>
     <MdInsertChart size={25} color={primaryColor} /> total number of studies{' '}
-    <Badge color="secondary">3</Badge>
+  <Badge color="secondary">{props.countForms.length}</Badge>
   </ListGroupItem>
   <ListGroupItem>
-    <MdBubbleChart size={25} color={primaryColor} /> total number of forms
-    costs <Badge color="secondary">4</Badge>
+    <MdBubbleChart size={25} color={primaryColor} /> total number of forms {' '}
+   <Badge color="secondary">{formsNumber}</Badge>
   </ListGroupItem>
   <ListGroupItem>
-    <MdShowChart size={25} color={primaryColor} /> Financial costs{' '}
-    <Badge color="secondary">2</Badge>
+    <MdShowChart size={25} color={primaryColor} /> study with most forms{' '}
+  <Badge color="secondary">{maxStudy}</Badge>
   </ListGroupItem>
   <ListGroupItem>
-    <MdPieChart size={25} color={primaryColor} /> Other operating
-    costs <Badge color="secondary">0</Badge>
+    <MdPieChart size={25} color={primaryColor} /> study with least forms{' '}
+    costs <Badge color="secondary">{minStudy}</Badge>
   </ListGroupItem>
 </ListGroup>
 </Card>
@@ -89,4 +98,34 @@ const FormsNumberStat= (props) => {
 FormsNumberStat.propTypes = {
   countForms: PropTypes.object.isRequired,
 };
+
+const calculateFormsTotalNumber=(countForms)=>{
+  let formsNumber=0;
+  countForms.map((element)=>{
+    formsNumber+=element.formsNumber
+  })
+  return formsNumber
+}
+
+const getStudyWithMaximumForms=(countForms)=>{
+  let max = {"formsNumber":0,"studyName":""};
+  countForms.map((element)=>{
+    if(element.formsNumber>max.formsNumber)
+    max=element;
+  })
+return max.studyName
+}
+
+const getStudyWithMinimumForms=(countForms)=>{
+  let min ={}
+  if(countForms.length>0){
+    min = {"formsNumber":countForms[0].formsNumber,"studyName":countForms[0].studyName};
+    countForms.map((element)=>{
+      if(element.formsNumber<min.formsNumber)
+      min=element;
+    })
+  }
+  return min.studyName
+}
+
 export default FormsNumberStat;

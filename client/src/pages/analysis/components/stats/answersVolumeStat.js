@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React ,{useEffect, useState} from "react";
 import {
   XYPlot,
   XAxis,
@@ -22,6 +22,55 @@ import {
   MdShowChart,
 } from 'react-icons/md';
 import { getColor } from '../../utils/colors';
+
+const AnswersVolumeStat = props => {
+  const [responsesNumber, setResponsesNumber] = useState();
+  const [maxAnswer, setMaxAnswer] = useState();
+  const [minAnswer, setMinAnswer] = useState();
+  const [primaryColor, setPrimaryColor] = useState();
+  useEffect(() => {
+   setResponsesNumber(calculateResponsesTotalNumber(props.answersVolume));
+    setMaxAnswer(getAnswerWithMaximumResponses(props.answersVolume));
+    setMinAnswer(getAnswerWithMinimumResponses(props.answersVolume));
+    setPrimaryColor(getColor('primary'));
+  },[]);
+  return (
+    <div>
+        <Card>
+          <CardHeader>chosen answers</CardHeader>
+          <CardBody>
+            {props.isAnswered ? (
+              <div>
+                <DisplayStat
+                answersVolume={props.answersVolume}
+                />
+                <ListGroup flush>
+                  <ListGroupItem>
+                    <MdInsertChart size={25} color={primaryColor} /> total number of answers{' '}
+                    <Badge color="secondary">{props.answersVolume.length}</Badge>
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <MdBubbleChart size={25} color={primaryColor} /> total number of responses {' '}
+                    <Badge color="secondary">{responsesNumber}</Badge>
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <MdShowChart size={25} color={primaryColor} /> most chosen answer {' '}
+                    <Badge color="secondary">{maxAnswer}</Badge>
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <MdPieChart size={25} color={primaryColor} /> least chosen answer {' '}
+                    <Badge color="secondary">{minAnswer}</Badge>
+                  </ListGroupItem>
+                </ListGroup>
+              </div>
+            ) : (            
+             <div>no responses found for this question</div>
+            )}
+          </CardBody>     
+        </Card>
+    </div>
+  ) 
+};
 
 const DisplayStat = (props) => {
   const {answersVolume} = props;
@@ -50,53 +99,39 @@ const DisplayStat = (props) => {
     </div>
   );
 }
-const answersVolumeStat = (props) => {
-  const primaryColor = getColor('primary');
-  return (
-      <div>
-          <Card>
-            <CardHeader>chosen answers</CardHeader>
-            <CardBody>
-            {props.isAnswered ? (
-              <div>
-               <DisplayStat
-               answersVolume={props.answersVolume}
-               />
-               <ListGroup flush>
-               <ListGroupItem>
-                 <MdInsertChart size={25} color={primaryColor} /> total number of studies{' '}
-                 <Badge color="secondary">3</Badge>
-               </ListGroupItem>
-               <ListGroupItem>
-                 <MdBubbleChart size={25} color={primaryColor} /> total number of forms
-                 costs <Badge color="secondary">4</Badge>
-               </ListGroupItem>
-               <ListGroupItem>
-                 <MdShowChart size={25} color={primaryColor} /> Financial costs{' '}
-                 <Badge color="secondary">2</Badge>
-               </ListGroupItem>
-               <ListGroupItem>
-                 <MdPieChart size={25} color={primaryColor} /> Other operating
-                 costs <Badge color="secondary">0</Badge>
-               </ListGroupItem>
-             </ListGroup>
-             </div>
-            ) : (            
-             <div>no responses found for this question</div>
-            )}
-
-              </CardBody>
-               
-          </Card>
-      </div>
-    ) 
-};
-
-answersVolumeStat.propTypes = {
+AnswersVolumeStat.propTypes = {
   answersVolume: PropTypes.object.isRequired,
   isAnswered : PropTypes.object.isRequired,
 };
 DisplayStat.propTypes = {
   answersVolume: PropTypes.object.isRequired,
 };
-export default answersVolumeStat;
+const calculateResponsesTotalNumber=(answersVolume)=>{
+  let responsesNumber=0;
+  answersVolume.map((element)=>{
+    responsesNumber+=element.count
+  })
+  return responsesNumber
+}
+
+const getAnswerWithMaximumResponses=(answersVolume)=>{
+  let max = {"count":0,"_id":""};
+  answersVolume.map((element)=>{
+    if(element.count>max.count)
+    max=element;
+  })
+return max._id;
+}
+
+const getAnswerWithMinimumResponses=(answersVolume)=>{
+  let min ={}
+  if(answersVolume.length>0){
+    min = {"count":answersVolume[0].count,"_id":answersVolume[0]._id};
+    answersVolume.map((element)=>{
+      if(element.count<min.count)
+      min=element;
+    })
+  }
+  return min._id
+}
+export default AnswersVolumeStat;

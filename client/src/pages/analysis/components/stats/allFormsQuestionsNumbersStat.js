@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React,{useEffect, useState} from "react";
 import {
   XYPlot,
   XAxis,
@@ -24,33 +24,41 @@ import {
 import { getColor } from '../../utils/colors';
 
 const AllFormsQuestionsNumbersStat = (props) => {
-  const primaryColor = getColor('primary');
+  const [questionsNumber, setQuestionsNumber] = useState();
+    const [maxForm, setMaxForm] = useState();
+    const [minForm, setMinForm] = useState();
+    const [primaryColor, setPrimaryColor] = useState();
+    useEffect(() => {
+      setQuestionsNumber(calculateQuestionsTotalNumber(props.countQuestions));
+      setMaxForm(getFormWithMaximumQuestions(props.countQuestions));
+      setMinForm(getFormWithMinimumQuestions(props.countQuestions));
+      setPrimaryColor(getColor('primary'));
+    },[]);
   return (
       <div>
           <Card>
             <CardHeader>number of questions per form</CardHeader>
             <CardBody>
               <DisplayStat
-                forms={props.forms}
                 countQuestions={props.countQuestions}
                 />
               </CardBody>
                 <ListGroup flush>
                   <ListGroupItem>
-                    <MdInsertChart size={25} color={primaryColor} /> total number of studies{' '}
-                    <Badge color="secondary">3</Badge>
+                    <MdInsertChart size={25} color={primaryColor} /> total number of forms{' '}
+                      <Badge color="secondary">{props.countQuestions.length}</Badge>
                   </ListGroupItem>
                   <ListGroupItem>
-                    <MdBubbleChart size={25} color={primaryColor} /> total number of forms
-                    costs <Badge color="secondary">4</Badge>
+                    <MdBubbleChart size={25} color={primaryColor} /> total number of questions{' '}
+                     <Badge color="secondary">{questionsNumber}</Badge>
                   </ListGroupItem>
                   <ListGroupItem>
-                    <MdShowChart size={25} color={primaryColor} /> Financial costs{' '}
-                    <Badge color="secondary">2</Badge>
+                    <MdShowChart size={25} color={primaryColor} /> form with most questions{' '}
+                    <Badge color="secondary">{maxForm}</Badge>
                   </ListGroupItem>
                   <ListGroupItem>
-                    <MdPieChart size={25} color={primaryColor} /> Other operating
-                    costs <Badge color="secondary">0</Badge>
+                    <MdPieChart size={25} color={primaryColor} /> form with least questions{' '}
+                     <Badge color="secondary">{minForm}</Badge>
                   </ListGroupItem>
                 </ListGroup>
           </Card>
@@ -58,18 +66,14 @@ const AllFormsQuestionsNumbersStat = (props) => {
     ) 
 };
 const DisplayStat = (props) => {
-  const { countQuestions, forms } = props;
+  const { countQuestions } = props;
   let data = [];
   let x, y;
   {
-    forms.map((form) => {
       countQuestions.map((element) => {
-        if (element.formId == form._id) {
-          x = form.title;
+          x = element.formTitle;
           y = element.questionsNumber;
           data.push({ x, y });
-        }
-      });
     });
   }
   return (
@@ -89,13 +93,39 @@ const DisplayStat = (props) => {
   );
 }
 AllFormsQuestionsNumbersStat.propTypes = {
-  forms: PropTypes.object.isRequired,
   countQuestions: PropTypes.object.isRequired,
 };
 
 DisplayStat.propTypes = {
-  forms: PropTypes.object.isRequired,
   countQuestions: PropTypes.object.isRequired,
 };
 
+const calculateQuestionsTotalNumber=(countQuestions)=>{
+  let questionsNumber=0;
+  countQuestions.map((element)=>{
+    questionsNumber+=element.questionsNumber
+  })
+  return questionsNumber
+}
+
+const getFormWithMaximumQuestions=(countQuestions)=>{
+  let max = {"questionsNumber":0,"formTitle":""};
+  countQuestions.map((element)=>{
+    if(element.questionsNumber>max.questionsNumber)
+    max=element;
+  })
+return max.formTitle
+}
+
+const getFormWithMinimumQuestions=(countQuestions)=>{
+  let min ={}
+  if(countQuestions.length>0){
+    min = {"questionsNumber":countQuestions[0].questionsNumber,"formTitle":countQuestions[0].formTitle};
+    countQuestions.map((element)=>{
+      if(element.questionsNumber<min.questionsNumber)
+      min=element;
+    })
+  }
+  return min.formTitle
+}
 export default AllFormsQuestionsNumbersStat;

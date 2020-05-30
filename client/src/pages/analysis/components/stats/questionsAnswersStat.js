@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
   XYPlot,
@@ -24,7 +24,16 @@ import {
 import { getColor } from '../../utils/colors';
 
 const QuestionsAnswsersStat = props => {
-  const primaryColor = getColor('primary');
+  const [responsesNumber, setResponsesNumber] = useState();
+  const [maxQuestion, setMaxQuestion] = useState();
+  const [minQuestion, setMinQuestion] = useState();
+  const [primaryColor, setPrimaryColor] = useState();
+  useEffect(() => {
+    setResponsesNumber(calculateResponsesTotalNumber(props.numberOfAnswers));
+    setMaxQuestion(getQuestionWithMaximumResponses(props.numberOfAnswers));
+    setMinQuestion(getQuestionWithMinimumResponses(props.numberOfAnswers));
+    setPrimaryColor(getColor('primary'));
+  },[]);
   return (
       <div>
           <Card>
@@ -36,32 +45,31 @@ const QuestionsAnswsersStat = props => {
               </CardBody>
                 <ListGroup flush>
                   <ListGroupItem>
-                    <MdInsertChart size={25} color={primaryColor} /> total number of studies{' '}
-                    <Badge color="secondary">3</Badge>
+                    <MdInsertChart size={25} color={primaryColor} /> total number of questions{' '}
+                    <Badge color="secondary">{props.numberOfAnswers.length}</Badge>
                   </ListGroupItem>
                   <ListGroupItem>
-                    <MdBubbleChart size={25} color={primaryColor} /> total number of forms
-                    costs <Badge color="secondary">4</Badge>
+                    <MdBubbleChart size={25} color={primaryColor} /> total number of responses {' '}
+                      <Badge color="secondary">{responsesNumber}</Badge>
                   </ListGroupItem>
                   <ListGroupItem>
-                    <MdShowChart size={25} color={primaryColor} /> Financial costs{' '}
-                    <Badge color="secondary">2</Badge>
+                    <MdShowChart size={25} color={primaryColor} /> question with most responses{' '}
+                    <Badge color="secondary">{maxQuestion}</Badge>
                   </ListGroupItem>
                   <ListGroupItem>
-                    <MdPieChart size={25} color={primaryColor} /> Other operating
-                    costs <Badge color="secondary">0</Badge>
+                    <MdPieChart size={25} color={primaryColor} /> question with least responses{' '}
+                     <Badge color="secondary">{minQuestion}</Badge>
                   </ListGroupItem>
                 </ListGroup>
           </Card>
       </div>
-    ) 
-  };
-  const DisplayStat = (props) => {
+  ) 
+};
+const DisplayStat = (props) => {
     let statData = [];
   let x, y;
   {
     props.numberOfAnswers.map((element) => {
-      console.log("element");
           x = element.questionText;
           y = element.numberOfAnswers;
           statData.push({ x, y });
@@ -83,14 +91,41 @@ const QuestionsAnswsersStat = props => {
   </div>
 
     );
+}
+QuestionsAnswsersStat.propTypes = {
+    numberOfAnswers: PropTypes.object.isRequired
+};
+DisplayStat.propTypes = {
+    numberOfAnswers: PropTypes.object.isRequired
+};
+  
+  const calculateResponsesTotalNumber=(numberOfAnswers)=>{
+    let responsesNumber=0;
+    numberOfAnswers.map((element)=>{
+      responsesNumber+=element.numberOfAnswers
+    })
+    return responsesNumber
   }
-  QuestionsAnswsersStat.propTypes = {
-    numberOfAnswers: PropTypes.object.isRequired
-  };
-  DisplayStat.propTypes = {
-    numberOfAnswers: PropTypes.object.isRequired
-  };
   
-
+  const getQuestionWithMaximumResponses=(numberOfAnswers)=>{
+    let max = {"numberOfAnswers":0," questionText":""};
+    numberOfAnswers.map((element)=>{
+      if(element.numberOfAnswers>max.numberOfAnswers)
+      max=element;
+    })
+  return max.questionText
+  }
   
-  export default QuestionsAnswsersStat;
+  const getQuestionWithMinimumResponses=(numberOfAnswers)=>{
+    let min ={}
+    if(numberOfAnswers.length>0){
+      min = {"numberOfAnswers":numberOfAnswers[0].numberOfAnswers,"questionText":numberOfAnswers[0].questionText};
+      numberOfAnswers.map((element)=>{
+        if(element.numberOfAnswersr<min.numberOfAnswers)
+        min=element;
+      })
+    }
+    return min.questionText
+  }
+  
+export default QuestionsAnswsersStat;

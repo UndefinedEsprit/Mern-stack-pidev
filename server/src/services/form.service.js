@@ -113,7 +113,7 @@ FormService.prototype.CountQuestions = async (req, res) => {
     let questionsNumber = await QuestionService.prototype.getCountByForm(
       form._id
     );
-    countMap.push({"formId":form._id,"questionsNumber":questionsNumber});
+    countMap.push({"formId":form._id,"questionsNumber":questionsNumber,"formTitle":form.title});
   }
 
   res.json(countMap);
