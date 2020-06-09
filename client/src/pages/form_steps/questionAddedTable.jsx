@@ -12,7 +12,6 @@ const QuestionAddedTable = () => {
    * inputs get their values
    */
   const loadQuestionToBeEdited = (question) => {
-
     let questions = form.formQuestions;
     let files = form.files;
     let file = null;
@@ -27,34 +26,33 @@ const QuestionAddedTable = () => {
               file = element;
             }
           });
-          files.splice(index,1);
+          files.splice(index, 1);
         }
         setForm({
           ...form,
           questionText: question.text,
           questionFileName: question.file,
-          questionFile : file,
+          questionFile: file,
           questionType: question.type,
           questionResponses: question.responses,
           questionIndex: index,
-          files : files
+          files: files,
         });
       }
     });
-    console.log(form);
   };
 
   /**
    * this function filter the form questions list and delete the
    * selected question
    */
-  const deleteQuestion = question => {
+  const deleteQuestion = (question) => {
     let questions = form.formQuestions;
     let files = form.files;
     if (question.file.length !== 0)
-      files = files.filter(file =>  file.name !== question.file);
+      files = files.filter((file) => file.name !== question.file);
     questions = questions.filter(
-      element =>
+      (element) =>
         !(element.text === question.text && element.type === question.type)
     );
     setForm({ ...form, formQuestions: questions, files: files });
@@ -77,31 +75,37 @@ const QuestionAddedTable = () => {
               <th scope="col">Question header</th>
               <th scope="col">File</th>
               <th scope="col">Type</th>
-              <th>Actions</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {questions.map(question => {
+            {questions.map((question) => {
               return (
                 <tr key={Math.random()}>
                   <td>#</td>
                   <td>{question.text}</td>
-                  <td>{(question.file === undefined || question.file.length === 0)? 0 : 1}</td>
+                  <td>
+                    {question.file === undefined || question.file.length === 0
+                      ? 0
+                      : 1}
+                  </td>
                   <td>{question.type}</td>
                   <td>
                     <button
                       type="button"
                       className="btn btn-warning"
-                      style={{margin : '0 2px'}}
+                      style={{ margin: "0 2px" }}
                       onClick={() => loadQuestionToBeEdited(question)}
+                      disabled={form.questionIndex !== -1}
                     >
                       <i className="fas fa-edit" style={{ color: "white" }}></i>
                     </button>
                     <button
                       type="button"
                       className="btn btn-danger"
-                      style={{margin : '0 2px'}}
+                      style={{ margin: "0 2px" }}
                       onClick={() => deleteQuestion(question)}
+                      disabled={form.questionIndex !== -1}
                     >
                       <i className="fas fa-trash-alt"></i>
                     </button>

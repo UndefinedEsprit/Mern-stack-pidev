@@ -1,5 +1,6 @@
 import React from "react";
 
+
 const FormDetailsPanel = ({ form }) => {
 
   const renderPublicationDate = () => {

@@ -1,73 +1,83 @@
-const express = require('express');
-const FormService = require('../services/form.service');
+const express = require("express");
+const FormService = require("../services/form.service");
 
-const multer  = require('multer')
+const multer = require("multer");
 const storage = multer.diskStorage({
-    destination : function(req,file,cb){
-        cb(null, '../uploads/');
-    },
-    filename : function (req,file,cb){
-        cb(null,file.originalname);
-    }
-})
-const upload = multer({ storage : storage })
+  destination: function (req, file, cb) {
+    cb(null, "../uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 const router = express.Router();
-const service = new FormService();
+const formService = new FormService();
 
-router.post('/new',service.add);
-router.post('/edit',service.edit);
-router.get('/',service.getAll);
+router.get("/getLatestForm", formService.getLatestForm);
+router.get("/getLatestPublishedForm", formService.getLatestPublishedForm);
+router.get("/getNumberOfAnswersByForm/:id", formService.getNumberOfAnswersById);
+router.get("/getStatusByStudy/:id", formService.getStatusByStudy);
+router.get("/getCountQuestions/:id", formService.CountQuestions);
 
-router.get('/:id',(req,res)=>{
-    let id =req.params.id
-    service.getById(id)
-    .then(result=>res.send(result))
-    .catch(err=>{
-        console.log(err)
-        res.status('500').send(err);
-    })
+router.post("/new", formService.add);
+router.post("/edit", formService.edit);
+router.get("/", formService.getAll);
+router.get("/getmostpublishedformsbystudy", formService.getMostPublishedFormsByStudy);
+router.get("/:id", (req, res) => {
+  let id = req.params.id;
+  formService
+    .getById(id)
+    .then((result) => res.send(result))
+    .catch((err) => {
+      console.log(err);
+      res.status("500").send(err);
+    });
 });
 
-router.delete('/:id',(req,res)=>{
-    let id = req.params.id;
-    service.delete(id)
-    .then(()=>res.send())
-    .catch(err=>{
-        console.log(err);
-        res.status('500').send();
-    })
+router.delete("/:id", (req, res) => {
+  let id = req.params.id;
+  formService
+    .delete(id)
+    .then(() => res.send())
+    .catch((err) => {
+      console.log(err);
+      res.status("500").send();
+    });
 });
 
-router.put('/', (req,res)=>{
-    let form =req.body;
-    service.update(form)
-    .then(result=> res.send(result))
-    .catch(err=>res.send(err));
+router.put("/", (req, res) => {
+  let form = req.body;
+  formService
+    .update(form)
+    .then((result) => res.send(result))
+    .catch((err) => res.send(err));
 });
 
-router.get('/getbystudy/:id', (req,res)=>{
-    let studyId = req.params.id;
-    console.log(studyId);
-    service.getByStudy(studyId)
-    .then(result=>res.send(result))
-    .catch(err=>{
-        console.log(err);
-        res.status('500').send();
-    })
+router.get("/getbystudy/:id", (req, res) => {
+  let studyId = req.params.id;
+  formService
+    .getByStudy(studyId)
+    .then((result) => res.send(result))
+    .catch((err) => {
+      console.log(err);
+      res.status("500").send();
+    });
 });
 
-router.post('/publish',(req,res)=>{
-     service.publish(req.body)
-     .then(result => res.send(result))
-     .catch(err=> {
-        console.log(err);
-        res.status('500').send();
-     });
+router.post("/publish", (req, res) => {
+  formService
+    .publish(req.body)
+    .then((result) => res.send(result))
+    .catch((err) => {
+      console.log(err);
+      res.status("500").send();
+    });
 });
 
-
-router.post('/upload',upload.array('file'), (req,res,next)=>{
-    res.status(200).json({message: 'images successfully saved'});
+router.post("/upload", upload.array("file"), (req, res, next) => {
+  res.status(200).json({ message: "images successfully saved" });
 });
+
 
 module.exports = router;

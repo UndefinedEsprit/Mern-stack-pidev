@@ -11,13 +11,15 @@ const ResponseAddedTable = () => {
    * this function deletes the response added
    * to the question from the questionResponses list
    */
-  const handleDelete = response => {
+  const handleDelete = (response) => {
     let files = form.files;
     if (response.file.length !== 0)
-      files = files.filter(file =>  file.name !== response.file);
+      files = files.filter((file) => file.name !== response.file);
     let responses = form.questionResponses;
-    responses = responses.filter(element => !(element.text === response.text));
-    setForm({ ...form, questionResponses: responses, files : files });
+    responses = responses.filter(
+      (element) => !(element.text === response.text)
+    );
+    setForm({ ...form, questionResponses: responses, files: files });
   };
 
   /**
@@ -36,16 +38,20 @@ const ResponseAddedTable = () => {
               <th scope="col">#</th>
               <th scope="col">Response</th>
               <th scope="col">File</th>
-              <th>Delete</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
-            {responses.map(response => {
+            {responses.map((response) => {
               return (
                 <tr key={Math.random()}>
                   <td>#</td>
                   <td>{response.text}</td>
-                  <td>{(response.file ===undefined || response.file === null) ? 0 : 1}</td>
+                  <td>
+                    {response.file === undefined || response.file.length === 0
+                      ? 0
+                      : 1}
+                  </td>
                   <td>
                     <button
                       type="button"

@@ -3,40 +3,39 @@ import { FormContext as Context } from "../../contexts/formContext";
 import ResponseAddedTable from "./responseAddedTable";
 
 const QuestionForm = () => {
-
   const [form, setForm] = useContext(Context);
-  const inputFileRef= useRef([]);
+  const inputFileRef = useRef([]);
 
   /**
    * this function adds the text inputs value into the context state
    */
-  const onChange = e => {
+  const onChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   /**
    * this function adds the file inputs value into the context state
    */
-  const onFileChange = e => {
-    let file =e.target.files[0];   
-    console.log(file); 
+  const onFileChange = (e) => {
+    let file = e.target.files[0];
     setForm({
       ...form,
       [e.target.name]: file,
-      [e.target.name+'Name']: (file === undefined || file === null) ? '' : file.name 
+      [e.target.name + "Name"]:
+        file === undefined || file === null ? "" : file.name,
     });
   };
 
   /**
    * this function adds the radio inputs values into the context state
    */
-  const onTypeChange = e => {
+  const onTypeChange = (e) => {
     setForm({
       ...form,
-      questionType: e.target.value
+      questionType: e.target.value,
     });
   };
 
@@ -44,25 +43,24 @@ const QuestionForm = () => {
    * this function joins the new added response to the response list to be added to the
    * form object later
    */
-  const onAddNewResponse = e => {
-
+  const onAddNewResponse = (e) => {
     let responses = form.questionResponses;
     let files = form.files;
-    let file =form.responseFile;
+    let file = form.responseFile;
 
-    if  (file !== undefined && file !== null) files.push(file);
+    if (file !== undefined && file !== null) files.push(file);
     let response = {
       text: form.responseText,
-      file: form.responseFileName
+      file: form.responseFileName,
     };
     responses.push(response);
     setForm({
       ...form,
       questionResponses: responses,
       responseText: "",
-      responseFileName : "",
+      responseFileName: "",
       responseFile: null,
-      files : files
+      files: files,
     });
     e.preventDefault();
   };
@@ -92,15 +90,18 @@ const QuestionForm = () => {
               className="form-control"
               name="questionFile"
               onChange={onFileChange}
-              ref={element =>inputFileRef.current[0]=element}
-              style={{display : 'none'}}
+              ref={(element) => (inputFileRef.current[0] = element)}
+              style={{ display: "none" }}
             />
             <button
               className="btn btn-secondary"
-              onClick={()=>inputFileRef.current[0].click()}
+              onClick={() => inputFileRef.current[0].click()}
             >
               <i className="fas fa-cloud-upload-alt" style={{ margin: 5 }}></i>
-              { (form.questionFileName === undefined || form.questionFileName.length === 0) ? 'Upload image' : form.questionFileName}
+              {form.questionFileName === undefined ||
+              form.questionFileName.length === 0
+                ? "Upload image"
+                : form.questionFileName}
             </button>
           </div>
           {/********** Question type radiobox ************/}
@@ -168,62 +169,69 @@ const QuestionForm = () => {
         </div>
       </div>
 
-      {/**
-       * This only gets loaded if the multiple choices button is active to display
-       * the response text n file inputs
-       */
-      form.questionType === "multiple" && (
-        <div className="row">
-          <div className="col-md-6 col-sm-12">
-            {/********** Response text input ************/}
-            <div className="form-group">
-              <label>Response</label>
-              <input
-                type="text"
-                className="form-control"
-                name="responseText"
-                value={form.responseText}
-                onChange={onChange}
-              />
+      {
+        /**
+         * This only gets loaded if the multiple choices button is active to display
+         * the response text n file inputs
+         */
+        form.questionType === "multiple" && (
+          <div className="row">
+            <div className="col-md-6 col-sm-12">
+              {/********** Response text input ************/}
+              <div className="form-group">
+                <label>Response</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="responseText"
+                  value={form.responseText}
+                  onChange={onChange}
+                />
+              </div>
+              {/********** Response file input ************/}
+              <div className="form-group">
+                <input
+                  type="file"
+                  className="form-control"
+                  name="responseFile"
+                  onChange={onFileChange}
+                  ref={(element) => (inputFileRef.current[1] = element)}
+                  style={{ display: "none" }}
+                />
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => inputFileRef.current[1].click()}
+                >
+                  <i
+                    className="fas fa-cloud-upload-alt"
+                    style={{ margin: 5 }}
+                  ></i>
+                  {form.responseFile === undefined || form.responseFile === null
+                    ? "Upload image"
+                    : form.responseFile.name}
+                </button>
+              </div>
+              {/********** Add resposnse button ************/}
+              <div className="form-group" style={{ textAlign: "right" }}>
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={onAddNewResponse}
+                  disabled={form.responseText.length === 0}
+                >
+                  <i className="fas fa-plus-circle" style={{ margin: 5 }}></i>
+                  Add response to this question
+                </button>
+              </div>
             </div>
-            {/********** Response file input ************/}
-            <div className="form-group">
-              <input
-                type="file"
-                className="form-control"
-                name="responseFile"
-                onChange={onFileChange}
-                ref={element=>inputFileRef.current[1] = element}
-                style={{display : 'none'}}
-              />
-              <button
-              className="btn btn-secondary"
-              onClick={()=>inputFileRef.current[1].click()}
-            >
-              <i className="fas fa-cloud-upload-alt" style={{ margin: 5 }}></i>
-              { ( form.responseFile === undefined || form.responseFile === null ) ? 'Upload image' : form.responseFile.name}
-            </button>
-            </div>
-            {/********** Add resposnse button ************/}
-            <div className="form-group" style={{ textAlign: "right" }}>
-              <button
-                className="btn btn-outline-success"
-                onClick={onAddNewResponse}
-                disabled={form.responseText.length === 0}
-              >
-                <i className="fas fa-plus-circle" style={{ margin: 5 }}></i>
-                Add response to this question
-              </button>
+            <div className="col-md-6 col-sm-12">
+              <div className="form-group">
+                <label htmlFor="">Responses added</label>
+                <ResponseAddedTable />
+              </div>
             </div>
           </div>
-          <div className="col-md-6 col-sm-12">
-            <div className="form-group">
-              <label htmlFor="">Responses added</label>
-              <ResponseAddedTable />
-            </div>
-          </div>
-        </div>
-      )}
+        )
+      }
     </>
   );
 };
