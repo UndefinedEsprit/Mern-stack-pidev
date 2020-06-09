@@ -34,7 +34,17 @@ const Sidebar = () => {
                 <i class="fas fa-chart-line"></i>
                 <span class="hide-menu">Analysis and Statistics</span>
               </Link>
-            </li>           
+            </li> 
+
+            <li> 
+            <Link
+                className="waves-effect waves-dark"
+                to=""
+              >
+                <i class="fa fa-users"></i>
+                <span class="hide-menu">Customers</span>
+              </Link>
+               </li>          
           </ul>
         </nav>
       </div>

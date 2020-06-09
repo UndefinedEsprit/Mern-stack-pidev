@@ -128,7 +128,7 @@ const Brief = (props) => {
                 borderWidth:"thin", 
               }}>
                 <h7>responding to the question </h7>
-              <h7> {mostChosenAnswer.questionText}</h7>
+              <h7> '{mostChosenAnswer.questionText}'</h7>
                 <h7> asked in the form </h7>
                 <h7> '{mostChosenAnswer.formTitle}' </h7>
                 <h7> in the study  '{mostChosenAnswer.studyName}' </h7>
