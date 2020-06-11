@@ -14,6 +14,31 @@ export async function GetStudies() {
 }
 
 /**
+ * Fetch users from the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetUsers() {
+  let res;
+  await axios.get(apiUrl + "/user/").then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+/**
+ * post users to the API
+ * @return {Response}          Fetch API Response
+ */
+export async function PostUsers(usersFile) {
+  let res;
+  console.log(usersFile)
+  await axios.post(apiUrl + "/user/",  {
+    "usersFile":usersFile
+  }).then((response) => {
+    res = response.data;
+  });
+  return res;
+}
+/**
  * Fetch number of forms per study from the API
  * @return {Response}          Fetch API Response
  */

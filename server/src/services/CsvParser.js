@@ -26,9 +26,9 @@ const stringifyStream = new stream.Transform({
 const consoleSinkWritable = new stream.Writable({
     objectMode: true,
     write: function(chunk, encoding, next) {
-        console.log(chunk);
         let model = new User(chunk);
         model._id = mongoose.Types.ObjectId();
+        console.log(model);
         const user = model.save();
         next();
     }

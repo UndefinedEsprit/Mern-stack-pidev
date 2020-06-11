@@ -1,5 +1,5 @@
 import * as types from '../../../constants/types';
-import {GetMostActiveUsers} from '../../../api/http';
+import {GetMostActiveUsers,GetUsers,PostUsers} from '../../../api/http';
 
 export  function getMostActiveUsers() {
     let mostActiveUsers;
@@ -10,9 +10,31 @@ export  function getMostActiveUsers() {
     };
 }
 
+export  function getUsers() {
+    let users;
+    return async (dispatch) => {
+        users=  await GetUsers();
+        dispatch(updateUsers(users));
+        return(users); 
+    };
+}
+
+export  function postUsers(usersFile) {
+    return async () => {
+       await PostUsers(usersFile); 
+    };
+}
+
 export function updateMostActiveUsers(mostActiveUsers) { 
         return {
             type: types.users.GETMOSTACTIVEUSERS,
             mostActiveUsers
         };
-    }
+}
+
+export function updateUsers(users) { 
+        return {
+            type: types.users.GETUSERS,
+            users
+        };
+}

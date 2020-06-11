@@ -30,20 +30,8 @@ const QuestionsTypesStat = props => {
               </CardBody>
                 <ListGroup flush>
                   <ListGroupItem>
-                    <MdInsertChart size={25} color={primaryColor} /> total number of studies{' '}
-                    <Badge color="secondary">3</Badge>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    <MdBubbleChart size={25} color={primaryColor} /> total number of forms
-                    costs <Badge color="secondary">4</Badge>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    <MdShowChart size={25} color={primaryColor} /> Financial costs{' '}
-                    <Badge color="secondary">2</Badge>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    <MdPieChart size={25} color={primaryColor} /> Other operating
-                    costs <Badge color="secondary">0</Badge>
+                    <MdInsertChart size={25} color={primaryColor} /> total number of questions{' '}
+                    <Badge color="secondary">{props.questions.length}</Badge>
                   </ListGroupItem>
                 </ListGroup>
           </Card>

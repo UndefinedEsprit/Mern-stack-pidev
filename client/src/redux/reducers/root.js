@@ -6,7 +6,7 @@ import { studies, studyIds,countForms,mostPublishedStudy,latestStudy } from '../
 import { forms, formIds ,countQuestions,formsStatus,latestForm,latestPublishedForm} from '../models/form/reducers/forms'; 
 import { questions,questionIds,questionsTypes} from '../models/question/reducers/questions'; 
 import { answersVolume,latestUserResponse,mostAnsweredQuestion,numberOfAnswers,mostChosenAnswer} from '../models/response/reducers/responses';
-import {mostActiveUsers} from '../models/user/reducers/users';
+import {mostActiveUsers,users} from '../models/user/reducers/users';
 import initialReduxState from "../constants/initialState";
   
    const appReducer = combineReducers({
@@ -31,7 +31,8 @@ import initialReduxState from "../constants/initialState";
     latestPublishedForm,
     mostAnsweredQuestion,
     numberOfAnswers,
-    mostChosenAnswer
+    mostChosenAnswer,
+    users
 });
    const rootReducer = (state, action) => {
     // when a reset is dispatched it will reset redux state

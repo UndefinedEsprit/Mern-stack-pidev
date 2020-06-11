@@ -88,7 +88,7 @@ const FormsNumberStat=(props) => {
   </ListGroupItem>
   <ListGroupItem>
     <MdPieChart size={25} color={primaryColor} /> study with least forms{' '}
-    costs <Badge color="secondary">{minStudy}</Badge>
+     <Badge color="secondary">{minStudy}</Badge>
   </ListGroupItem>
 </ListGroup>
 </Card>

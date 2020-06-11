@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 import { FormSteps, Management } from "./pages";
 import { DefaultRoute } from "./components";
-
+import UsersPage from "./pages/analysis/users";
 import AnalysisHome from "./pages/analysis/analysisHome";
 import FormsPage from "./pages/analysis/formsPage";
 import QuestionsPage from "./pages/analysis/questionsPage";
@@ -16,6 +16,7 @@ const Routes = () => {
       <DefaultRoute path="/form/edit" component={FormSteps} />
       <DefaultRoute path="/management" component={Management} />
       <DefaultRoute path="/studiespage" component={AnalysisHome} />
+      <DefaultRoute path="/userspage" component={UsersPage} />
       <DefaultRoute path="/questionspage/:id" component={QuestionsPage} />
       <DefaultRoute path="/formspage/:id" component={FormsPage} />
       <DefaultRoute path="/responsespage/:id" component={ResponsesPage} />

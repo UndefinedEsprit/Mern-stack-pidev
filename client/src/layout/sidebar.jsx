@@ -39,7 +39,7 @@ const Sidebar = () => {
             <li> 
             <Link
                 className="waves-effect waves-dark"
-                to=""
+                to="userspage"
               >
                 <i class="fa fa-users"></i>
                 <span class="hide-menu">Customers</span>
