@@ -33,10 +33,12 @@ const consoleSinkWritable = new stream.Writable({
         next();
     }
 });
-const CsvParserService=(req, res)=>{
+const CsvParserService=(req,res)=>{
     creaturesFileReadStream
     .pipe(parser)	  
     .pipe(consoleSinkWritable); 
+    res.send(true);
+
 
 }
 

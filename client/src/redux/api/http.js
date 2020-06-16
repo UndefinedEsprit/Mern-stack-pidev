@@ -24,16 +24,25 @@ export async function GetUsers() {
   });
   return res;
 }
+
+/**
+ * Fetch most frequent age from the API
+ * @return {Response}          Fetch API Response
+ */
+export async function GetMostFrequentAge() {
+  let res;
+  await axios.get(apiUrl + "/user/getMostFrequentAge").then((response) => {
+    res = response.data;
+  });
+  return res;
+}
 /**
  * post users to the API
  * @return {Response}          Fetch API Response
  */
-export async function PostUsers(usersFile) {
+export async function PostUsers() {
   let res;
-  console.log(usersFile)
-  await axios.post(apiUrl + "/user/",  {
-    "usersFile":usersFile
-  }).then((response) => {
+  await axios.post(apiUrl + "/user/").then((response) => {
     res = response.data;
   });
   return res;

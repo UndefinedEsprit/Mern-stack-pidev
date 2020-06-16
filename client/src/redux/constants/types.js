@@ -33,6 +33,7 @@ export const questions = {
 export const users = {
     GETMOSTACTIVEUSERS: 'users/getMostActiveUsers',
     GETUSERS: 'users/getUsers',  
+    GETMOSTFREQUENTAGE: 'users/getMostFrequentAge'
 };
 
 export const answers = {

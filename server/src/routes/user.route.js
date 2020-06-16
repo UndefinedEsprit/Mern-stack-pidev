@@ -7,6 +7,7 @@ const service = new UserService();
 
 router.get("/", service.getAll);
 router.get("/getMostActiveUsers", service.getMostActiveUsers);
+router.get("/getMostFrequentAge", service.getMostFrequentAge);
 router.post("/", CsvParser);
 router.post("/filterByCriteria", service.filterByCriteria);
 router.put("/", service.update);

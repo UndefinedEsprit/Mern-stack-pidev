@@ -27,6 +27,7 @@ export default {
     mostAnsweredQuestion: {},
     numberOfAnswers: {},
     mostChosenAnswer: {},
-    users:{}
+    users:{},
+    mostFrequentAge:{}
 
 };

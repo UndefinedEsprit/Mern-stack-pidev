@@ -10,6 +10,7 @@ import {
     PopoverBody,
   } from 'reactstrap';
 const Brief = (props) => {
+  console .log(props.mostFrequentAge);
   const { mostPublishedStudy ,mostAnsweredQuestion,mostChosenAnswer} = props;
   const [isOpenFirst, setIsOpenFirst] = useState(false);
   const toggleFirst = () => {
@@ -143,10 +144,9 @@ const Brief = (props) => {
          < BsFillCaretDownFill size={20} color={"back"} />
         <NumberWidget
         onClick={toggleFourth }
-        title="most answered question"
-          subtitle="This question"
-          number="9 answers"
-          
+        title="the most frequent age "
+          subtitle={props.mostFrequentAge._id}
+          number={props.mostFrequentAge.count}
         /> 
          
          <Popover
@@ -163,10 +163,10 @@ const Brief = (props) => {
                 borderWidth:"thin", 
                 backgroundColor:"#f0f2f0",
               }}>
-                <h6>question type multilpe4</h6>
-             <br></br>
-             <h6>belonging to this form4</h6>
-            
+              <h7>there are  </h7>
+              <h7> {props.mostFrequentAge.count}'</h7>
+                <h7> users with the most commun age of </h7>
+                <h7> '{props.mostFrequentAge._id}' </h7>
                 </PopoverBody>
                 </Popover>
        </NavLink>
@@ -179,6 +179,7 @@ Brief.propTypes = {
   mostPublishedStudy: PropTypes.object.isRequired,
   mostAnsweredQuestion: PropTypes.object.isRequired,
   mostChosenAnswer: PropTypes.object.isRequired,
+  mostFrequentAge: PropTypes.object.isRequired
 };
 
 export default Brief;

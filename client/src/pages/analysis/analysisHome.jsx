@@ -21,7 +21,7 @@ import QuestionsTypesBrief from "./components/questionsTypesBrief";
 import MostActiveUsers from "./components/mostActiveUsers";
 import FormsNumberStat from "./components/stats/FormsNumberStat";
 import StudiesList from "./components/studiesList";
-import {getMostActiveUsers} from "../../redux/models/user/actions/users";
+import {getMostActiveUsers,getMostFrequentAge} from "../../redux/models/user/actions/users";
 import {getQuestionsTypes} from "../../redux/models/question/actions/questions";
 import {getLatestForm,getLatestPublishedForm} from "../../redux/models/form/actions/forms";
 import {getLatestUserResponse,getMostAnsweredQuestion,getMostChosenAnswer} from "../../redux/models/response/actions/responses";
@@ -45,7 +45,8 @@ function AnalysisHome(props) {
         await props.actions.getLatestUserResponse();
         await props.actions.getLatestPublishedForm(); 
         await props.actions.getMostAnsweredQuestion();   
-        await props.actions.getMostChosenAnswer();   
+        await props.actions.getMostChosenAnswer();
+        await props.actions.getMostFrequentAge();   
         setIsLoading(false);
       } catch (e) {
         console.log(e);
@@ -71,6 +72,7 @@ function AnalysisHome(props) {
       mostPublishedStudy={props.mostPublishedStudy}
       mostAnsweredQuestion= {props.mostAnsweredQuestion}
       mostChosenAnswer={props.mostChosenAnswer}
+      mostFrequentAge={props.mostFrequentAge}
       />
       <Row>
       <Col md="6" sm="12" xs="12">
@@ -131,6 +133,8 @@ AnalysisHome.propTypes = {
     getLatestStudy: PropTypes.func,
     getMostAnsweredQuestion: PropTypes.func,
     getMostChosenAnswer: PropTypes.func,
+    getMostFrequentAge:PropTypes.func,
+    
   }),
 };
 export const mapStateToProps = (state) => {
@@ -149,8 +153,9 @@ export const mapStateToProps = (state) => {
   const latestUserResponse= state.latestUserResponse;
   const mostAnsweredQuestion = state.mostAnsweredQuestion;
   const mostChosenAnswer= state.mostChosenAnswer;
+  const mostFrequentAge= state.mostFrequentAge;
   return { studies, countForms,mostPublishedStudy,questionsTypes,mostActiveUsers,latestUserResponse,
-    latestForm,latestPublishedForm,latestStudy,mostAnsweredQuestion,mostChosenAnswer};
+    latestForm,latestPublishedForm,latestStudy,mostAnsweredQuestion,mostChosenAnswer,mostFrequentAge};
 };
 
 export const mapDispatchToProps = (dispatch) => {
@@ -168,7 +173,8 @@ export const mapDispatchToProps = (dispatch) => {
         getLatestPublishedForm,
         getLatestForm,
         getMostAnsweredQuestion,
-        getMostChosenAnswer
+        getMostChosenAnswer,
+        getMostFrequentAge
       },
       dispatch
     ),

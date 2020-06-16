@@ -49,6 +49,14 @@ UserService.prototype.getMostActiveUsers = async (req, res) => {
   res.json(activeUsers);
 }
 
+UserService.prototype.getMostFrequentAge = async (req, res) => {
+  const filter = await User.aggregate([  
+        {$group: {_id: "$age", count: { "$sum": 1}}},
+        {$sort: {count: -1}},
+        {$limit: 1} 
+  ]);
+  res.json(filter[0]);
+};
 
 module.exports = UserService;
 

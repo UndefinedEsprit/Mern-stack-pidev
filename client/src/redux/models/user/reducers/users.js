@@ -18,6 +18,19 @@ export function mostActiveUsers(state = initialState.mostActiveUsers, action) {
       return state;
   }
 }
+export function mostFrequentAge(state = initialState.mostFrequentAge, action) {
+  switch (action.type) {
+    case types.users.GETMOSTFREQUENTAGE: {
+      const { mostFrequentAge } = action;
+      let nextState = Object.assign({}, state);
+      nextState =mostFrequentAge;
+      return nextState;
+    }
+
+    default:
+      return state;
+  }
+}
 
 export function users(state = initialState.users, action) {
   switch (action.type) {

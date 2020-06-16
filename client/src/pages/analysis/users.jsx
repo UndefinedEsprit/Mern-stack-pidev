@@ -17,6 +17,8 @@ import {getMostActiveUsers,getUsers,postUsers} from "../../redux/models/user/act
 function UsersPage(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [browse, setBrowse] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,7 +26,6 @@ function UsersPage(props) {
         await props.actions.reset();
         await props.actions.getMostActiveUsers();
         await props.actions.getUsers();
-        
         setIsLoading(false);
       } catch (e) {
         console.log(e);
@@ -32,21 +33,13 @@ function UsersPage(props) {
       }
     };
     fetchData();
-  }, []);
+  }, [isUploaded]);
   const onFileChange = event => { 
     setSelectedFile({ selectedFile: event.target.files[0] }); 
   }; 
-  
-  const onFileUpload = async() => { 
-    const formData = new FormData(); 
-    var csvFile = new Blob([selectedFile], {type: "csv"});
-    formData.append( 
-      "myFile", 
-      csvFile, 
-      csvFile.name 
-    );   
-    console.log(selectedFile); 
-    await props.actions.postUsers(selectedFile);
+  const onFileUpload = async() => {  
+    await props.actions.postUsers();
+    setIsUploaded(!isUploaded);
   }; 
  
   const fileData = () => { 
@@ -91,9 +84,10 @@ function UsersPage(props) {
       </Col>
       <Col lg="8" md="12" sm="12" xs="12">
       <input type="file" onChange={onFileChange} /> 
-                <button onClick={onFileUpload}> 
-                  Upload users 
-                </button> 
+              <button onClick={onFileUpload}> 
+                Upload users 
+              </button> 
+  
       </Col>
       </Row>
      <br/>
